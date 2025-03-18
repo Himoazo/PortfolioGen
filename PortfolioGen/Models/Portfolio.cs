@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PortfolioGen.Models;
 
 public class Portfolio
 {
     public int Id { get; set; }
-    public Guid PortfolioSlug { get; set; } 
+    public string PortfolioSlug { get; set; } 
 
     [Required(ErrorMessage = "Titel måste anges")]
     [StringLength(64, MinimumLength = 1, ErrorMessage = "Titel måste vara mellan 1 och 64 tecken")]
@@ -17,21 +18,22 @@ public class Portfolio
     [Display(Name = "Biografi")]
     public string Bio { get; set; } = string.Empty;
 
-    [Display(Name = "Bild")]
-    public string? ProfileImageUrl { get; set; }
+    
+    public string? ProfileImage { get; set; }
+    [NotMapped]
+    [Display(Name = "Profil Bild")]
+    public IFormFile? ProfileImg { get; set; }
    
     public bool Published { get; set; }
     public DateOnly CreatedAt { get; set; }
 
     public required string AppUserId { get; set; }
-    public required AppUser AppUser { get; set; }
-    public List<Project> Projects { get; set; } = [];
-    public List<SocialLink> SocialLinks { get; set; } = [];
+    public required AppUser AppUser { get; set; } 
+    public List<Project>? Projects { get; set; } 
+    public List<SocialLink>? SocialLinks { get; set; }
 
-    public Portfolio(Guid PortfolioSlug)
+    public Portfolio()
     {
-        this.PortfolioSlug = PortfolioSlug;
-        _ = Guid.NewGuid().ToString("N")[..8];
+        PortfolioSlug = Guid.NewGuid().ToString("N")[..8];
     }
 }
-
