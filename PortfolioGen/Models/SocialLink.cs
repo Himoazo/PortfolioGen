@@ -1,12 +1,22 @@
-﻿namespace PortfolioGen.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PortfolioGen.Models;
 
 public class SocialLink
 {
     public int Id { get; set; }
-    
-    public string Platform { get; set; }
-    public string Url { get; set; }
+
+    [Required(ErrorMessage = "Plattform måste anges")]
+    [StringLength(50, ErrorMessage = "Max 50 tecken")]
+    [Display(Name = "Plattform")]
+    public string Platform { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "URL måste anges")]
+    [Url(ErrorMessage = "Ogiltig URL")]
+    [StringLength(255, ErrorMessage = "Max 255 tecken")]
+    [Display(Name = "URL")]
+    public string Url { get; set; } = string.Empty;
 
     public int PortfolioId { get; set; }
-    public Portfolio Portfolio { get; set; }
+    public required Portfolio Portfolio { get; set; }
 }
