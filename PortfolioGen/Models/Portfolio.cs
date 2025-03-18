@@ -6,7 +6,7 @@ namespace PortfolioGen.Models;
 public class Portfolio
 {
     public int Id { get; set; }
-    public string UsernameSlug { get; set; }  = Guid.NewGuid().ToString("N")[..8];
+    public Guid PortfolioSlug { get; set; } 
 
     [Required(ErrorMessage = "Titel måste anges")]
     [StringLength(64, MinimumLength = 1, ErrorMessage = "Titel måste vara mellan 1 och 64 tecken")]
@@ -27,5 +27,11 @@ public class Portfolio
     public required AppUser AppUser { get; set; }
     public List<Project> Projects { get; set; } = [];
     public List<SocialLink> SocialLinks { get; set; } = [];
+
+    public Portfolio(Guid PortfolioSlug)
+    {
+        this.PortfolioSlug = PortfolioSlug;
+        _ = Guid.NewGuid().ToString("N")[..8];
+    }
 }
 
