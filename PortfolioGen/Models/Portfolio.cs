@@ -28,7 +28,7 @@ public class Portfolio
     public DateOnly CreatedAt { get; set; }
 
     public required string AppUserId { get; set; }
-    public required AppUser AppUser { get; set; } 
+    public AppUser AppUser { get; set; } = null!;
     public List<Project>? Projects { get; set; } 
     public List<SocialLink>? SocialLinks { get; set; }
 
