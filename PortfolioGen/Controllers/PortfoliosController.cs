@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using PortfolioGen.Data;
 using PortfolioGen.DTOs;
 using PortfolioGen.Models;
@@ -28,7 +29,8 @@ public class PortfoliosController : Controller
     // GET: Portfolios
     public async Task<IActionResult> Index()
     {
-        var applicationDbContext = _context.Portfolios.Include(p => p.AppUser);
+        var userId = _userManager.GetUserId(User);
+        var applicationDbContext = _context.Portfolios.Include(p => p.AppUser).Where(p => p.AppUserId == userId);
         return View(await applicationDbContext.ToListAsync());
     }
 
