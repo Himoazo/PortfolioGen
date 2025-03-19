@@ -46,7 +46,7 @@ public class CreateProjectDto
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }
 
-    public int PortfolioId { get; set; }
+    /*public int PortfolioId { get; set; }*/
 }
 
 
