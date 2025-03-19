@@ -20,10 +20,15 @@ public class PortfoliosController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly UserManager<AppUser> _userManager;
-    public PortfoliosController(ApplicationDbContext context, UserManager<AppUser> UserManager)
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly string wwwRootPath;
+    public PortfoliosController(ApplicationDbContext context, UserManager<AppUser> UserManager, 
+        IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
         _userManager = UserManager;
+        _webHostEnvironment = webHostEnvironment;
+        wwwRootPath = _webHostEnvironment.WebRootPath;
     }
 
     // GET: Portfolios
@@ -42,15 +47,14 @@ public class PortfoliosController : Controller
             return NotFound();
         }
 
-        var portfolio = await _context.Portfolios
-            .Include(p => p.AppUser)
+        var portfolioDto = await _context.Portfolios
             .FirstOrDefaultAsync(m => m.Id == id);
-        if (portfolio == null)
+        if (portfolioDto == null)
         {
             return NotFound();
         }
 
-        return View(portfolio);
+        return View(portfolioDto);
     }
 
     // GET: Portfolios/Create
@@ -81,6 +85,21 @@ public class PortfoliosController : Controller
                 CreatedAt = DateOnly.FromDateTime(DateTime.Now)
             };
 
+            if (portfolioDto.ProfileImg is not null)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(portfolioDto.ProfileImg.FileName);
+                string extension = Path.GetExtension(portfolioDto.ProfileImg.FileName);
+                portfolio.ProfileImage = fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+
+                string path = Path.Combine(wwwRootPath + "/images", fileName);
+
+                using var filestream = new FileStream(path, FileMode.Create);
+                if(portfolio.ProfileImg is not null)
+                {
+                    await portfolio.ProfileImg.CopyToAsync(filestream);
+                } 
+            }
+
             _context.Add(portfolio);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -90,36 +109,46 @@ public class PortfoliosController : Controller
     }
 
     // GET: Portfolios/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+    public async Task<IActionResult> Edit(int id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
         var portfolio = await _context.Portfolios.FindAsync(id);
-        if (portfolio == null)
+        if (portfolio == null) return NotFound();
+
+        var editPortfolioDto = new EditPortfolioDto
         {
-            return NotFound();
-        }
-        ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id", portfolio.AppUserId);
-        return View(portfolio);
+            Id = portfolio.Id,
+            Title = portfolio.Title,
+            Bio = portfolio.Bio,
+            ProfileImg = portfolio.ProfileImg
+        };
+
+        return View(editPortfolioDto);
     }
+
+
 
     // POST: Portfolios/Edit/5
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("Id,PortfolioSlug,Title,Bio,ProfileImage,Published,CreatedAt,AppUserId")] Portfolio portfolio)
+    public async Task<IActionResult> Edit(int id, EditPortfolioDto EditportfolioDto)
     {
-        if (id != portfolio.Id)
-        {
-            return NotFound();
-        }
+        var userId = _userManager.GetUserId(User);
+        if (userId is null) return Unauthorized();
+
+        var portfolio = await _context.Portfolios.FindAsync(id);
+        if (portfolio is null) return NotFound();
+
+        if (userId != portfolio.AppUserId) return Unauthorized();
+        if (id != EditportfolioDto.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
+            portfolio.Title = EditportfolioDto.Title;
+            portfolio.Bio = EditportfolioDto.Bio;
+            portfolio.ProfileImg = EditportfolioDto.ProfileImg;
+
             try
             {
                 _context.Update(portfolio);
@@ -138,8 +167,9 @@ public class PortfoliosController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id", portfolio.AppUserId);
-        return View(portfolio);
+        Console.WriteLine("#########################################################################");
+        /*ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id", EditportfolioDto.AppUserId);*/
+        return View(EditportfolioDto);
     }
 
     // GET: Portfolios/Delete/5

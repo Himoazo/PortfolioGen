@@ -50,7 +50,7 @@ public class CreateProjectDto
 }
 
 
-public class UpdateProjectDto
+public class EditProjectDto
 {
     public int Id { get; set; }
 
