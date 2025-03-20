@@ -14,6 +14,7 @@ has a portfolio (SqliteException: SQLite Error 19: 'UNIQUE constraint failed: Po
 # Fore report and video
 Don't forget to mention:
 - It's not a portfolio website, it's a CMS which generates portfolios till alla
+- app.MapFallbackToController("Profile", "Public"); id = HttpContext.Request.Path.Value?.TrimStart('/');
 Extra features:
 - Image upload and auto convert and resize
 - Github API integration

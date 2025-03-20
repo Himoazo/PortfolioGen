@@ -21,6 +21,11 @@ public class API : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPortfolio(string id)
     {
+        /*//CONSIDER THIS IMPORTANTTTTT
+        if (string.IsNullOrEmpty(id))
+        {
+            id = HttpContext.Request.Path.Value?.TrimStart('/');
+        }*/
         var porftolio = await _context.Portfolios
             .Include(p => p.Projects)
             .Include(p => p.SocialLinks)
