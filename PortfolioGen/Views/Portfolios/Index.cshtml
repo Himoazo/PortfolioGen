@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PortfolioGen.Models.Portfolio>
+﻿@model PortfolioGen.Models.Portfolio
 
 @{
     ViewData["Title"] = "Index";
@@ -12,62 +12,39 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PortfolioSlug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfileImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Published)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.AppUser)
-            </th> *@
+            <th>@Html.DisplayNameFor(model => model.PortfolioSlug)</th>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Bio)</th>
+            <th>@Html.DisplayNameFor(model => model.ProfileImage)</th>
+            <th>@Html.DisplayNameFor(model => model.Published)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
+            <td>@Html.DisplayFor(model => model.PortfolioSlug)</td>
+            <td>@Html.DisplayFor(model => model.Title)</td>
+            <td>@Html.DisplayFor(model => model.Bio)</td>
             <td>
-                @Html.DisplayFor(modelItem => item.PortfolioSlug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bio)
-            </td>
-            <td>
-                <a href="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" target="_blank">
-                    <img src="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" alt="Profile Image" />
+                <a href="/images/@Model.ProfileImage" target="_blank">
+                    <img src="/images/@Model.ProfileImage" alt="Profile Image" />
                 </a>
             </td>
+            <td>@Html.DisplayFor(model => model.Published)</td>
+            <td>@Html.DisplayFor(model => model.CreatedAt)</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.AppUser.Id)
-            </td> *@
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
             </td>
         </tr>
-}
     </tbody>
 </table>
+
+
+<form asp-action="TogglePublish" asp-controller="Portfolios" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">
+        @(Model.Published ? "Unpublish" : "Publish")
+    </button>
+</form>

@@ -12,6 +12,9 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using PortfolioGen.Data;
 using PortfolioGen.DTOs;
 using PortfolioGen.Models;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace PortfolioGen.Controllers;
 
@@ -35,8 +38,11 @@ public class PortfoliosController : Controller
     public async Task<IActionResult> Index()
     {
         var userId = _userManager.GetUserId(User);
-        var applicationDbContext = _context.Portfolios.Include(p => p.AppUser).Where(p => p.AppUserId == userId);
-        return View(await applicationDbContext.ToListAsync());
+        var portfolio = await _context.Portfolios
+            .Include(p => p.AppUser)
+            .FirstOrDefaultAsync(p => p.AppUserId == userId);
+
+        return View(portfolio);
     }
 
     // GET: Portfolios/Details/5
@@ -87,24 +93,8 @@ public class PortfoliosController : Controller
 
             if (portfolioDto.ProfileImg is not null)
             {
-                // Generate a unique filename
-                string fileName = Path.GetFileNameWithoutExtension(portfolioDto.ProfileImg.FileName);
-                fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
-                string extension = Path.GetExtension(portfolioDto.ProfileImg.FileName);
-                string finalFileName = fileName + extension;
-
-                // Save the filename in the database
-                portfolio.ProfileImage = finalFileName;
-
-                // Define the path where the file will be saved
-                string path = Path.Combine(wwwRootPath, "images", finalFileName);
-
-                // Create the file and copy the content
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await portfolioDto.ProfileImg.CopyToAsync(fileStream);
-                    fileStream.Close();
-                }
+                portfolio.ProfileImage = await UploadImg(portfolioDto.ProfileImg);
+                
             }
 
             _context.Add(portfolio);
@@ -154,7 +144,12 @@ public class PortfoliosController : Controller
         {
             portfolio.Title = EditportfolioDto.Title;
             portfolio.Bio = EditportfolioDto.Bio;
-            portfolio.ProfileImg = EditportfolioDto.ProfileImg;
+
+            if (EditportfolioDto.ProfileImg is not null)
+            {
+                Console.WriteLine("EditportfolioDto.ProfileImg is not null"); // this's not getting logged which means the statemnt is never true
+                portfolio.ProfileImage = await UploadImg(EditportfolioDto.ProfileImg);
+            }
 
             try
             {
@@ -215,5 +210,45 @@ public class PortfoliosController : Controller
     private bool PortfolioExists(int id)
     {
         return _context.Portfolios.Any(e => e.Id == id);
+    }
+
+    //Publish / unpublish
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> TogglePublish(int id)
+    {
+        var portfolio = await _context.Portfolios.FindAsync(id);
+        if (portfolio == null) return NotFound();
+
+        portfolio.Published = !portfolio.Published;
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index)); // Redirect after toggling
+    }
+
+    //Upload images
+    private async Task<string> UploadImg(IFormFile imageFile)
+    {
+        string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+        fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
+       
+        string finalFileName = fileName + ".jpg";
+
+        string path = Path.Combine(wwwRootPath, "images", finalFileName);
+
+        
+        using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
+        {
+            image.Mutate(x => x
+                .Resize(new ResizeOptions
+                {
+                    Size = new Size(300, 300),
+                    Mode = ResizeMode.Crop 
+                }));
+
+            await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
+        }
+
+        return finalFileName;
     }
 }

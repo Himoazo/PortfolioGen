@@ -31,6 +31,11 @@ public class API : ControllerBase
             return NotFound("Potfolio was not found");
         }
 
+        if (porftolio.Published == false)
+        {
+            return NotFound("Portfolio is not yet published");
+        }
+
         return Ok(porftolio);
     }
 

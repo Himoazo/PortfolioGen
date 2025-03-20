@@ -1,4 +1,4 @@
-﻿@model PortfolioGen.DTOs.PortfolioDto;
+﻿@model PortfolioGen.DTOs.PublicPortfolioDto;
 @{
     Layout = null;
 }
@@ -16,8 +16,9 @@
 
             @Html.DisplayFor(model => model.Bio)
 
-
-            @Html.DisplayFor(model => model.ProfileImg)
-<a href="/images/@Html.DisplayFor(model => model.ProfileImage)" target="_blank">
-    <img src="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" alt="Profile Image" />
-</a>
+@if (!string.IsNullOrEmpty(Model.ProfileImage))
+{
+    <a href="/images/@Model.ProfileImage" target="_blank">
+        <img src="/images/@Model.ProfileImage" alt="Profile Image"/>
+    </a>
+}

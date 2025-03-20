@@ -26,10 +26,10 @@ public class PublicController : Controller
         
         if (string.IsNullOrEmpty(id))
         {
-            id = HttpContext.Request.Path.Value?.TrimStart('/'); // Capture the original path
+            id = HttpContext.Request.Path.Value?.TrimStart('/'); 
         }
 
-        Console.WriteLine($"ID value: '{id}'"); // This gets printed
+        Console.WriteLine($"ID value: '{id}'"); 
 
         if (!string.IsNullOrEmpty(id))
         {
@@ -45,16 +45,21 @@ public class PublicController : Controller
                 return NotFound("Potfolio was not found");
             }
 
-            PortfolioDto dto = new()
+            if (porftolio.Published == false)
+            { 
+                return NotFound("Portfolio is not yet published"); 
+            }
+
+            PublicPortfolioDto dto = new()
             {
                 Title = porftolio.Title,
                 Bio = porftolio.Bio,
-                ProfileImg = porftolio.ProfileImg
+                ProfileImage = porftolio.ProfileImage
             };
 
             return View(dto);
         }
-        Console.WriteLine($"Nothing Works"); // This gets printed
+        Console.WriteLine($"Nothing Works"); 
         return View("Index");
     }
 }
