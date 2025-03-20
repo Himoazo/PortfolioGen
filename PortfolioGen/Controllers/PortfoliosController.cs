@@ -87,17 +87,24 @@ public class PortfoliosController : Controller
 
             if (portfolioDto.ProfileImg is not null)
             {
+                // Generate a unique filename
                 string fileName = Path.GetFileNameWithoutExtension(portfolioDto.ProfileImg.FileName);
+                fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
                 string extension = Path.GetExtension(portfolioDto.ProfileImg.FileName);
-                portfolio.ProfileImage = fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+                string finalFileName = fileName + extension;
 
-                string path = Path.Combine(wwwRootPath + "/images", fileName);
+                // Save the filename in the database
+                portfolio.ProfileImage = finalFileName;
 
-                using var filestream = new FileStream(path, FileMode.Create);
-                if(portfolio.ProfileImg is not null)
+                // Define the path where the file will be saved
+                string path = Path.Combine(wwwRootPath, "images", finalFileName);
+
+                // Create the file and copy the content
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    await portfolio.ProfileImg.CopyToAsync(filestream);
-                } 
+                    await portfolioDto.ProfileImg.CopyToAsync(fileStream);
+                    fileStream.Close();
+                }
             }
 
             _context.Add(portfolio);

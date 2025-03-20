@@ -49,7 +49,9 @@
                 @Html.DisplayFor(modelItem => item.Bio)
             </td>
             <td>
-                <a href="@Html.DisplayFor(modelItem => item.ProfileImage)">@Html.DisplayFor(modelItem => item.ProfileImage)</a>
+                <a href="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" target="_blank">
+                    <img src="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" alt="Profile Image" />
+                </a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Published)

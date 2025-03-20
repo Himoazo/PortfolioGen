@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PortfolioGen.Data;
+using PortfolioGen.DTOs;
 
 namespace PortfolioGen.Controllers;
 
@@ -19,20 +20,41 @@ public class PublicController : Controller
             return View();
     }
 
-    [Route("/")]
-    [Route("/{id}")]
-    public IActionResult HandleParam(string? id = null)
-    {
-        if (!string.IsNullOrEmpty(id))
-        {
-            // Log the parameter to the console
-            Console.WriteLine($"URL Parameter: {id}");
 
-            // Return the Profile view or content
-            return View("Profile", id);
+    public async Task<IActionResult> Profile(string? id)
+    {
+        
+        if (string.IsNullOrEmpty(id))
+        {
+            id = HttpContext.Request.Path.Value?.TrimStart('/'); // Capture the original path
         }
 
-        // If parameter doesn't exist, show index page
+        Console.WriteLine($"ID value: '{id}'"); // This gets printed
+
+        if (!string.IsNullOrEmpty(id))
+        {
+            Console.WriteLine($"{id} ID is null");
+            var porftolio = await _context.Portfolios
+            .Include(p => p.Projects)
+            .Include(p => p.SocialLinks)
+            .FirstOrDefaultAsync(p => p.PortfolioSlug == id);
+
+            if (porftolio is null)
+            {
+                Console.WriteLine($"{id} Portfolio is null");
+                return NotFound("Potfolio was not found");
+            }
+
+            PortfolioDto dto = new()
+            {
+                Title = porftolio.Title,
+                Bio = porftolio.Bio,
+                ProfileImg = porftolio.ProfileImg
+            };
+
+            return View(dto);
+        }
+        Console.WriteLine($"Nothing Works"); // This gets printed
         return View("Index");
     }
 }

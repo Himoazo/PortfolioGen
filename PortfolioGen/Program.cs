@@ -45,4 +45,6 @@ app.MapControllerRoute(
 app.MapRazorPages()
    .WithStaticAssets();
 
+app.MapFallbackToController("Profile", "Public"); // Public portfolio 
+
 app.Run();

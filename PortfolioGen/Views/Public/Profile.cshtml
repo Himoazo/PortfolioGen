@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model PortfolioGen.DTOs.PortfolioDto;
 @{
     Layout = null;
 }
@@ -9,6 +9,15 @@
 
 
 
-<h2>Profile</h2>
 
-<p>Parameter value: @Model</p>
+            @Html.DisplayFor(model => model.Title)
+        
+
+
+            @Html.DisplayFor(model => model.Bio)
+
+
+            @Html.DisplayFor(model => model.ProfileImg)
+<a href="/images/@Html.DisplayFor(model => model.ProfileImage)" target="_blank">
+    <img src="/images/@Html.DisplayFor(modelItem => item.ProfileImage)" alt="Profile Image" />
+</a>
