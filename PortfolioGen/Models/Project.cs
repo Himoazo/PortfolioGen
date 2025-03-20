@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PortfolioGen.Models;
 
@@ -26,5 +27,6 @@ public class Project
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     public int PortfolioId { get; set; }
-    public required Portfolio Portfolio { get; set; }
+    [JsonIgnore]
+    public Portfolio Portfolio { get; set; } = null!;
 }

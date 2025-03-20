@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PortfolioGen.Models;
 
@@ -18,5 +19,6 @@ public class SocialLink
     public string Url { get; set; } = string.Empty;
 
     public int PortfolioId { get; set; }
-    public required Portfolio Portfolio { get; set; }
+    [JsonIgnore]
+    public Portfolio Portfolio { get; set; } = null!;
 }

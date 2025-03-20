@@ -167,7 +167,6 @@ public class PortfoliosController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        Console.WriteLine("#########################################################################");
         /*ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id", EditportfolioDto.AppUserId);*/
         return View(EditportfolioDto);
     }
