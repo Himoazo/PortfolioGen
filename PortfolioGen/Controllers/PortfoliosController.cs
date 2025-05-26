@@ -42,6 +42,12 @@ public class PortfoliosController : Controller
             .Include(p => p.AppUser)
             .FirstOrDefaultAsync(p => p.AppUserId == userId);
 
+        if (portfolio == null) 
+        {
+
+            return RedirectToAction("Create");
+        }
+
         return View(portfolio);
     }
 
@@ -64,7 +70,7 @@ public class PortfoliosController : Controller
     }
 
     // GET: Portfolios/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
         ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id");
         return View();
@@ -79,6 +85,12 @@ public class PortfoliosController : Controller
     {
         var userId = _userManager.GetUserId(User);
         if (userId is null) return Unauthorized();
+
+        var existingPortfolio = await _context.Portfolios
+            .Include(p => p.AppUser)
+            .FirstOrDefaultAsync(p => p.AppUserId == userId);
+
+        if (existingPortfolio != null) { return RedirectToAction(nameof(Index)); }
 
         if (ModelState.IsValid)
         {
