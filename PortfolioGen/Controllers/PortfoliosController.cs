@@ -70,7 +70,7 @@ public class PortfoliosController : Controller
     }
 
     // GET: Portfolios/Create
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
         ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id");
         return View();
