@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PortfolioGen.Data;
 using PortfolioGen.Models;
+using System.Security.Claims;
 
 
 
@@ -16,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -26,26 +27,36 @@ builder.Services.AddAuthentication()
         options.ClientId = builder.Configuration["Authentication:GitHub:ClientId"];
         options.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
         options.ClaimActions.MapJsonKey("urn:github:login", "login");
+        options.ClaimActions.MapJsonKey("urn:github:name", "name");
         options.Scope.Add("public_repo");
         options.SaveTokens = true;
 
-        options.Events = new OAuthEvents
+        /*options.Events = new OAuthEvents
         {
             OnCreatingTicket = async context =>
             {
+                
                 var githubUsername = context.Identity.FindFirst("urn:github:login")?.Value;
+                var displayName = context.Identity.FindFirst("urn:github:name")?.Value;
 
                 var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<AppUser>>();
-                var signInManager = context.HttpContext.RequestServices.GetRequiredService<SignInManager<AppUser>>();
-                var user = await userManager.GetUserAsync(context.Principal);
 
-                if (user != null && string.IsNullOrEmpty(user.UserName))
+                var loginProvider = context.Options.ClaimsIssuer;
+                var providerKey = context.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                var user = await userManager.FindByLoginAsync(loginProvider, providerKey);
+
+                if (user != null)
                 {
-                    user.UserName = githubUsername;
-                    await userManager.UpdateAsync(user);
+                    if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Name))
+                    {
+                        user.UserName ??= githubUsername;
+                        user.Name ??= displayName;
+                        await userManager.UpdateAsync(user);
+                    }
                 }
             }
-        };
+        };*/
 
     });
 

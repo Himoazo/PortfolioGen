@@ -1,13 +1,13 @@
-using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
 using PortfolioGen.Data;
-using PortfolioGen.DTOs;
 using PortfolioGen.Models;
-using System.Diagnostics;
-using System.Security.Claims;
+using PortfolioGen.DTOs;
 using System.Text.Json;
+using Microsoft.Net.Http.Headers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace PortfolioGen.Controllers;
 
@@ -15,28 +15,29 @@ namespace PortfolioGen.Controllers;
 public class HomeController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly SignInManager<AppUser> _signInManager;
-
-    public HomeController(IHttpClientFactory httpClientFactory, SignInManager<AppUser> signInManager)
+    private readonly UserManager<AppUser> _userManager;
+    public HomeController(IHttpClientFactory httpClientFactory, UserManager<AppUser> UserManager)
     {
-        _httpClientFactory = httpClientFactory;
-        _signInManager = signInManager;
+       _httpClientFactory = httpClientFactory;
+       _userManager = UserManager;
     }
 
 
     public async Task<IActionResult> Index()
     {
-        var info = await _signInManager.GetExternalLoginInfoAsync();
-        var username = info.Principal.FindFirst("urn:github:login")?.Value;
+        var user = await _userManager.GetUserAsync(User);
+        var githubUsername = user?.UserName;
 
-        foreach (var claim in User.Claims)
+        if (string.IsNullOrEmpty(githubUsername)) 
         {
-            Console.WriteLine($"{claim.Type}: {claim.Value}");
+            return View();
         }
+
+  
 
         var httpRequestMessage = new HttpRequestMessage(
             HttpMethod.Get,
-            $"https://api.github.com/users/{username}/repos")
+            $"https://api.github.com/users/{githubUsername}/repos")
         {
             Headers =
             {

@@ -6,15 +6,12 @@ namespace PortfolioGen.Models;
 
 public class AppUser : IdentityUser
 {
-    [Required(ErrorMessage = "Förnamn måste anges")]
-    [StringLength(64, ErrorMessage = "Namn kan inte vara längre än 64 tecken")]
-    [Display(Name = "Förnamn")]
-    public string FirstName { get; set; } = string.Empty;
+    [Required(ErrorMessage = "Du måste ange ditt namn")]
+    [StringLength(255, ErrorMessage = "Namn kan inte vara längre än 255 tecken")]
+    [Display(Name = "För och efternamn")]
+    public string Name { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Efternamn måste anges")]
-    [StringLength(64, ErrorMessage = "Efternamn kan inte vara längre än 64 tecken")]
-    [Display(Name = "Efternamn")]
-    public string? LastName { get; set; } = string.Empty;
+    
 
     public Portfolio? Portfolio { get; set; }
 }
