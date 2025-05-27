@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PortfolioGen.Data;
 using PortfolioGen.Models;
-using AspNet.Security.OAuth.GitHub;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,11 +23,33 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
-        options.ClientId = "your_client_id";
-        options.ClientSecret = "your_client_secret";
+        options.ClientId = builder.Configuration["Authentication:GitHub:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
+        options.ClaimActions.MapJsonKey("urn:github:login", "login");
         options.Scope.Add("public_repo");
-        options.SaveTokens = true; 
+        options.SaveTokens = true;
+
+        options.Events = new OAuthEvents
+        {
+            OnCreatingTicket = async context =>
+            {
+                var githubUsername = context.Identity.FindFirst("urn:github:login")?.Value;
+
+                var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<AppUser>>();
+                var signInManager = context.HttpContext.RequestServices.GetRequiredService<SignInManager<AppUser>>();
+                var user = await userManager.GetUserAsync(context.Principal);
+
+                if (user != null && string.IsNullOrEmpty(user.UserName))
+                {
+                    user.UserName = githubUsername;
+                    await userManager.UpdateAsync(user);
+                }
+            }
+        };
+
     });
+
+builder.Services.AddHttpClient(); // HttpClient
 
 var app = builder.Build();
 

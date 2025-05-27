@@ -35,8 +35,21 @@ public class ProjectsController : Controller
     // GET: Projects
     public async Task<IActionResult> Index()
     {
-        var applicationDbContext = _context.Projects.Include(p => p.Portfolio);
-        return View(await applicationDbContext.ToListAsync());
+        var userId = _userManager.GetUserId(User);
+        var portfolio = await _context.Portfolios
+            .FirstOrDefaultAsync(p => p.AppUserId == userId);
+
+        if (portfolio == null)
+        {
+            return RedirectToAction("Create", "Portfolios");
+        }
+
+        var project = await _context.Projects
+            .Where(p => p.PortfolioId == portfolio.Id)
+            .Include(p => p.Portfolio)
+            .ToListAsync();
+
+        return View(project);
     }
 
     // GET: Projects/Details/5

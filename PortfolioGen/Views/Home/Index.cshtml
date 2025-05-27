@@ -1,4 +1,18 @@
-﻿@{
+﻿@model IEnumerable<GitHubRepoDto>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+
+
+@* <h2>Dina GitHub Repos</h2>
+
+<ul>
+    @foreach (var repo in Model)
+    {
+        <li>
+            <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description
+        </li>
+    }
+</ul> *@
