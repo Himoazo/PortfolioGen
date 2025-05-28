@@ -16,9 +16,6 @@ public class ProjectDto
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
 
-    [Display(Name = "Projektbild")]
-    public string? ImageUrl { get; set; }
-
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }
@@ -42,9 +39,6 @@ public class CreateProjectDto
     [StringLength(1000, ErrorMessage = "Max 1000 tecken")]
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
-
-    [Display(Name = "Bild URL")]
-    public string? ImageUrl { get; set; }
 
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
@@ -71,9 +65,6 @@ public class EditProjectDto
     [StringLength(1000, ErrorMessage = "Max 1000 tecken")]
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
-
-    [Display(Name = "Bild URL")]
-    public string? ImageUrl { get; set; }
 
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]

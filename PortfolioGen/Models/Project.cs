@@ -17,10 +17,6 @@ public class Project
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
 
-    [Display(Name = "Bild URL")]
-    [Url(ErrorMessage = "Ogiltig URL")]
-    public string? ImageUrl { get; set; }
-
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }

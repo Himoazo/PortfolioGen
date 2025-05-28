@@ -14,6 +14,8 @@
 Don't forget to mention:
 - It's not a portfolio website, it's a CMS which generates portfolios till alla
 - app.MapFallbackToController("Profile", "Public"); id = HttpContext.Request.Path.Value?.TrimStart('/');
+- It's using Github API for auth and getting repos
+- Profile img
 Extra features:
 - Image upload and auto convert and resize
 - Github API integration

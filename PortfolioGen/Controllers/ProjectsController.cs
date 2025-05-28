@@ -54,7 +54,6 @@ public class ProjectsController : Controller
             Id = p.Id,
             Title = p.Title,
             Description = p.Description,
-            ImageUrl = p.ImageUrl,
             ProjectUrl = p.ProjectUrl,
             GithubUrl = p.GithubUrl,
             PortfolioId = p.PortfolioId
@@ -111,7 +110,6 @@ public class ProjectsController : Controller
             {
                 Title = projectDto.Title,
                 Description = projectDto.Description,
-                ImageUrl = projectDto.ImageUrl,
                 ProjectUrl = projectDto.ProjectUrl,
                 GithubUrl = projectDto.GithubUrl,
                 PortfolioId = portfolio.Id,
@@ -178,7 +176,6 @@ public class ProjectsController : Controller
 
             project.Title = editProjectDto.Title;
             project.Description = editProjectDto.Description;
-            project.ImageUrl = editProjectDto.ImageUrl;
             project.ProjectUrl = editProjectDto.ProjectUrl;
             project.GithubUrl = editProjectDto.GithubUrl;
             

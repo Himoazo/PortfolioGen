@@ -14,7 +14,7 @@
         @foreach (var repo in Model)
         {
         <li>
-            <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description
+            <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description -@repo.Homepage - @repo.Stargazers_Count
         </li>
         }
     }

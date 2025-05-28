@@ -56,7 +56,6 @@ public class HomeController : Controller
             var repos = await JsonSerializer.DeserializeAsync<IEnumerable<GitHubRepoDto>>(contentStream,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            Console.WriteLine(repos);
 
             return View(repos);
         }
