@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PortfolioGen.Models.Project>
+﻿@model IEnumerable<PortfolioGen.DTOs.ProjectDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,10 +25,7 @@
                 @Html.DisplayNameFor(model => model.ProjectUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Portfolio)
+                @Html.DisplayNameFor(model => model.GithubUrl)
             </th>
             <th></th>
         </tr>
@@ -43,16 +40,18 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                @if (item.ImageUrl is not null)
+                {
+                    <a href="@item.ImageUrl" target="_blank">
+                        <img src="@item.ImageUrl" alt="Project Image" />
+                    </a>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProjectUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Portfolio.Bio)
+                @Html.DisplayFor(modelItem => item.GithubUrl)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

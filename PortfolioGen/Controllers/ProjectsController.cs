@@ -44,12 +44,23 @@ public class ProjectsController : Controller
             return RedirectToAction("Create", "Portfolios");
         }
 
-        var project = await _context.Projects
+        var projects = await _context.Projects
             .Where(p => p.PortfolioId == portfolio.Id)
             .Include(p => p.Portfolio)
             .ToListAsync();
 
-        return View(project);
+        var projectDtos = projects.Select(p => new ProjectDto
+        {
+            Id = p.Id,
+            Title = p.Title,
+            Description = p.Description,
+            ImageUrl = p.ImageUrl,
+            ProjectUrl = p.ProjectUrl,
+            GithubUrl = p.GithubUrl,
+            PortfolioId = p.PortfolioId
+        }).ToList();
+
+        return View(projectDtos);
     }
 
     // GET: Projects/Details/5
@@ -102,6 +113,7 @@ public class ProjectsController : Controller
                 Description = projectDto.Description,
                 ImageUrl = projectDto.ImageUrl,
                 ProjectUrl = projectDto.ProjectUrl,
+                GithubUrl = projectDto.GithubUrl,
                 PortfolioId = portfolio.Id,
                 Portfolio = portfolio,
                 CreatedAt = DateTime.Now
@@ -134,8 +146,6 @@ public class ProjectsController : Controller
     }
 
     // POST: Projects/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, EditProjectDto editProjectDto)
@@ -170,6 +180,7 @@ public class ProjectsController : Controller
             project.Description = editProjectDto.Description;
             project.ImageUrl = editProjectDto.ImageUrl;
             project.ProjectUrl = editProjectDto.ProjectUrl;
+            project.GithubUrl = editProjectDto.GithubUrl;
             
             try
             {

@@ -16,12 +16,16 @@ public class ProjectDto
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
 
-    [Display(Name = "Bild URL")]
+    [Display(Name = "Projektbild")]
     public string? ImageUrl { get; set; }
 
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }
+
+    [Url(ErrorMessage = "Ogiltig URL")]
+    [Display(Name = "Github-repo URL")]
+    public string? GithubUrl { get; set; }
 
     public int PortfolioId { get; set; }
 }
@@ -45,6 +49,10 @@ public class CreateProjectDto
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }
+
+    [Url(ErrorMessage = "Ogiltig URL")]
+    [Display(Name = "Github-repo URL")]
+    public string? GithubUrl { get; set; }
 
     /*public int PortfolioId { get; set; }*/
 }
@@ -70,4 +78,8 @@ public class EditProjectDto
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Projekt URL")]
     public string? ProjectUrl { get; set; }
+
+    [Url(ErrorMessage = "Ogiltig URL")]
+    [Display(Name = "Github-repo URL")]
+    public string? GithubUrl { get; set; }
 }
