@@ -1,24 +1,54 @@
-﻿@model PortfolioGen.DTOs.PublicPortfolioDto;
-@{
-    Layout = null;
-}
+﻿@model PortfolioGen.DTOs.PublicPortfolioDto
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = $"{Model.Name}'s porfolio";
 }
 
 
+<h1>@Model.Name</h1>
+<h2>@Model.Title</h2>
 
-
-            @Html.DisplayFor(model => model.Title)
-        
-
-
-            @Html.DisplayFor(model => model.Bio)
-
-@if (!string.IsNullOrEmpty(Model.ProfileImage))
-{
+<div>
     <a href="/images/@Model.ProfileImage" target="_blank">
-        <img src="/images/@Model.ProfileImage" alt="Profile Image"/>
+        <img src="/images/@Model.ProfileImage" alt="Profile Image" />
     </a>
-}
+</div>
+
+<article>@Model.Bio</article>
+
+<div>
+    @if (Model.SocialLinks != null)
+    {
+        @foreach (var link in Model.SocialLinks)
+        {
+            @link.Platform
+            @link.Url
+        }
+    }
+</div>
+
+<div>
+    @if (Model.Projects != null)
+    {
+        @foreach (var project in Model.Projects)
+        {
+            @project.Title
+            @project.Description
+            @project.ProjectUrl
+            @project.GithubUrl
+        }
+    }
+</div>
+
+<ul>
+    @if (Model.GitHubRepos != null)
+    {
+        @foreach (var repo in Model.GitHubRepos)
+        {
+            <li>
+                <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description -@repo.Homepage - @repo.Stargazers_Count
+            </li>
+        }
+    }
+
+</ul>

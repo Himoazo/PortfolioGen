@@ -1,22 +1,102 @@
-﻿@model IEnumerable<GitHubRepoDto>
+﻿@model PortfolioGen.DTOs.PublicPortfolioDto
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = $"{Model.Name}'s portfolio";
 }
 
+<div class="portfolio-container">
+
+    <div class="portfolio-header">
+        <h1>@Model.Name</h1>
+        <h2>@Model.Title</h2>
+
+        <div class="profile-image-container">
+            <a href="/images/@Model.ProfileImage" target="_blank">
+                <img src="/images/@Model.ProfileImage" alt="Profile Image" />
+            </a>
+        </div>
+    </div>
 
 
-<h2>Dina GitHub Repos</h2>
+    <div class="portfolio-content">
 
-<ul>
-    @if(Model != null)
-    {
-        @foreach (var repo in Model)
+        <div class="section">
+            <h3 class="section-title">About Me</h3>
+            <article class="bio-content">@Model.Bio</article>
+        </div>
+
+        @if (Model.SocialLinks != null)
         {
-        <li>
-            <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description -@repo.Homepage - @repo.Stargazers_Count
-        </li>
+            <div class="section">
+                <h3 class="section-title">Connect With Me</h3>
+                <div class="social-links">
+                    @foreach (var link in Model.SocialLinks)
+                    {
+                        <a href="@link.Url" target="_blank" class="social-link">
+                            @link.Platform
+                        </a>
+                    }
+                </div>
+            </div>
         }
-    }
-    
-</ul>
+
+ 
+        @if (Model.Projects != null)
+        {
+            <div class="section">
+                <h3 class="section-title">Featured Projects</h3>
+                <div class="projects-grid">
+                    @foreach (var project in Model.Projects)
+                    {
+                        <div class="project-card">
+                            <h4 class="project-title">@project.Title</h4>
+                            <p class="project-description">@project.Description</p>
+                            <div class="project-links">
+                                @if (!string.IsNullOrEmpty(project.ProjectUrl))
+                                {
+                                    <a href="@project.ProjectUrl" target="_blank" class="project-link primary">
+                                        View Project
+                                    </a>
+                                }
+                                @if (!string.IsNullOrEmpty(project.GithubUrl))
+                                {
+                                    <a href="@project.GithubUrl" target="_blank" class="project-link secondary">
+                                        View Code
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (Model.GitHubRepos != null)
+        {
+            <div class="section">
+                <h3 class="section-title">GitHub Repositories</h3>
+                <div class="github-repos">
+                    <ul class="repo-list">
+                        @foreach (var repo in Model.GitHubRepos)
+                        {
+                            <li class="repo-item">
+                                <a href="@repo.Html_Url" target="_blank" class="repo-link">@repo.Name</a>
+                                @if (!string.IsNullOrEmpty(repo.Description))
+                                {
+                                    <p class="repo-description">@repo.Description</p>
+                                }
+                                <div class="repo-meta">
+                                    @if (!string.IsNullOrEmpty(repo.Homepage))
+                                    {
+                                        <a href="@repo.Homepage" target="_blank" class="repo-homepage">Live Demo</a>
+                                    }
+                                    <span class="repo-stars">@repo.Stargazers_Count</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>

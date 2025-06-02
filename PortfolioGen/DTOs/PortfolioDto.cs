@@ -39,10 +39,11 @@ public class EditPortfolioDto
 
 public class PublicPortfolioDto
 {
+    public string Name { get; set; } = "";
     public string Title { get; set; } = "";
     public string Bio { get; set; } = "";
     public string? ProfileImage { get; set; }
-    public bool Published { get; set; }
+    /*public bool Published { get; set; }*/
 
     public List<ProjectDto> Projects { get; set; } = [];
     public List<SocialLinkDto> SocialLinks { get; set; } = [];
