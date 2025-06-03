@@ -13,7 +13,7 @@ public class Project
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Beskrivning saknas")]
-    [StringLength(1000, ErrorMessage = "Max 1000 tecken")]
+    [StringLength(250, ErrorMessage = "Max 250 tecken")]
     [Display(Name = "Beskrivning")]
     public string Description { get; set; } = string.Empty;
 

@@ -18,12 +18,13 @@ public class Portfolio
     [Display(Name = "Biografi")]
     public string Bio { get; set; } = string.Empty;
 
-    
+    [Display(Name = "Profil Bild")]
     public string? ProfileImage { get; set; }
     [NotMapped]
     [Display(Name = "Profil Bild")]
     public IFormFile? ProfileImg { get; set; }
-   
+
+    [Display(Name = "Publicerat")]
     public bool Published { get; set; }
     public DateOnly CreatedAt { get; set; }
 

@@ -4,99 +4,124 @@
     ViewData["Title"] = $"{Model.Name}'s portfolio";
 }
 
+
 <div class="portfolio-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <h1 class="profile-name">@Model.Name</h1>
 
-    <div class="portfolio-header">
-        <h1>@Model.Name</h1>
-        <h2>@Model.Title</h2>
-
+        <!-- Profile Image -->
         <div class="profile-image-container">
             <a href="/images/@Model.ProfileImage" target="_blank">
-                <img src="/images/@Model.ProfileImage" alt="Profile Image" />
+                <img src="/images/@Model.ProfileImage" alt="@Model.Name's Profile" class="profile-image" />
             </a>
         </div>
-    </div>
 
-
-    <div class="portfolio-content">
-
-        <div class="section">
-            <h3 class="section-title">About Me</h3>
-            <article class="bio-content">@Model.Bio</article>
-        </div>
-
-        @if (Model.SocialLinks != null)
+        <!-- Social Links -->
+        @if (Model.SocialLinks != null && Model.SocialLinks.Any())
         {
-            <div class="section">
-                <h3 class="section-title">Connect With Me</h3>
-                <div class="social-links">
-                    @foreach (var link in Model.SocialLinks)
+            <div class="social-links">
+                @foreach (var link in Model.SocialLinks)
+                {
+                    @if(link.Platform == "Gmail" || link.Platform == "Outlook")
                     {
-                        <a href="@link.Url" target="_blank" class="social-link">
-                            @link.Platform
+                        <a href="mailto: + @(link.Url)" target="_blank" class="social-link" title="@link.Url">
+                            <img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
+                        </a>
+                    } else
+                    {
+                        <a href="@link.Url" target="_blank" class="social-link" title="@link.Url">
+                            <img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
                         </a>
                     }
-                </div>
+                }
             </div>
         }
+    </div>
 
- 
-        @if (Model.Projects != null)
-        {
-            <div class="section">
-                <h3 class="section-title">Featured Projects</h3>
-                <div class="projects-grid">
+    <!-- Biography -->
+    @if (!string.IsNullOrEmpty(Model.Bio))
+    {
+        <div class="bio-section">
+            <article class="bio-text">@Model.Bio</article>
+        </div>
+    }
+
+    <!-- Projects Section -->
+    @if ((Model.Projects != null && Model.Projects.Any()) || (Model.GitHubRepos != null && Model.GitHubRepos.Any()))
+    {
+        <div class="projects-section">
+            <h2 class="section-title">Projects</h2>
+
+            <div class="projects-grid">
+                <!-- User Added Projects -->
+                @if (Model.Projects != null)
+                {
                     @foreach (var project in Model.Projects)
                     {
                         <div class="project-card">
-                            <h4 class="project-title">@project.Title</h4>
-                            <p class="project-description">@project.Description</p>
+                            <h3 class="project-title">@project.Title</h3>
+
+                            @if (!string.IsNullOrEmpty(project.Description))
+                            {
+                                <p class="project-description">@project.Description</p>
+                            }
+
                             <div class="project-links">
                                 @if (!string.IsNullOrEmpty(project.ProjectUrl))
                                 {
-                                    <a href="@project.ProjectUrl" target="_blank" class="project-link primary">
-                                        View Project
+                                    <a href="@project.ProjectUrl" target="_blank" class="project-link">
+                                        🌐 Live Demo
                                     </a>
                                 }
                                 @if (!string.IsNullOrEmpty(project.GithubUrl))
                                 {
-                                    <a href="@project.GithubUrl" target="_blank" class="project-link secondary">
-                                        View Code
+                                    <a href="@project.GithubUrl" target="_blank" class="project-link">
+                                        📱 GitHub
                                     </a>
                                 }
                             </div>
                         </div>
                     }
-                </div>
-            </div>
-        }
+                }
 
-        @if (Model.GitHubRepos != null)
-        {
-            <div class="section">
-                <h3 class="section-title">GitHub Repositories</h3>
-                <div class="github-repos">
-                    <ul class="repo-list">
-                        @foreach (var repo in Model.GitHubRepos)
-                        {
-                            <li class="repo-item">
-                                <a href="@repo.Html_Url" target="_blank" class="repo-link">@repo.Name</a>
-                                @if (!string.IsNullOrEmpty(repo.Description))
+                <!-- GitHub Repositories -->
+                @if (Model.GitHubRepos != null)
+                {
+                    @foreach (var repo in Model.GitHubRepos)
+                    {
+                        <div class="project-card">
+                            <h3 class="project-title">
+                                @repo.Name
+                                <span class="github-indicator">GitHub</span>
+                            </h3>
+
+                            @if (!string.IsNullOrEmpty(repo.Description))
+                            {
+                                <p class="project-description">@repo.Description</p>
+                            }
+
+                            <div class="project-links">
+                                <a href="@repo.Html_Url" target="_blank" class="project-link">
+                                    📱 Repository
+                                </a>
+                                @if (!string.IsNullOrEmpty(repo.Homepage))
                                 {
-                                    <p class="repo-description">@repo.Description</p>
+                                    <a href="@repo.Homepage" target="_blank" class="project-link">
+                                        🌐 Homepage
+                                    </a>
                                 }
-                                <div class="repo-meta">
-                                    @if (!string.IsNullOrEmpty(repo.Homepage))
-                                    {
-                                        <a href="@repo.Homepage" target="_blank" class="repo-homepage">Live Demo</a>
-                                    }
-                                    <span class="repo-stars">@repo.Stargazers_Count</span>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </div>
+                                @if (repo.Stargazers_Count > 0)
+                                {
+                                    <span class="repo-badge">
+                                        ⭐ @repo.Stargazers_Count
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>

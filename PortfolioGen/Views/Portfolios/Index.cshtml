@@ -4,38 +4,40 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Profil</h1>
 
-@*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
 <table class="table">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.PortfolioSlug)</th>
-            <th>@Html.DisplayNameFor(model => model.Title)</th>
-            <th>@Html.DisplayNameFor(model => model.Bio)</th>
-            <th>@Html.DisplayNameFor(model => model.ProfileImage)</th>
-            <th>@Html.DisplayNameFor(model => model.Published)</th>
-            <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
         <tr>
-            <td>@Html.DisplayFor(model => model.PortfolioSlug)</td>
-            <td>@Html.DisplayFor(model => model.Title)</td>
-            <td>@Html.DisplayFor(model => model.Bio)</td>
+            <th>@Html.DisplayNameFor(model => model.ProfileImage)</th>
             <td>
                 <a href="/images/@Model.ProfileImage" target="_blank">
                     <img src="/images/@Model.ProfileImage" alt="Profile Image" />
                 </a>
             </td>
-            <td>@Html.DisplayFor(model => model.Published)</td>
-            <td>@Html.DisplayFor(model => model.CreatedAt)</td>
+        </tr>
+
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <td>@Html.DisplayFor(model => model.Title)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Bio)</th>
+            <td>@Html.DisplayFor(model => model.Bio)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.PortfolioSlug)</th>
+            <td>@Html.DisplayFor(model => model.PortfolioSlug)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Published)</th>
+            <td>@(Model.Published ? "ja" : "nej")</td>
+        </tr>
+        <tr>
+            <th>Åtgärder</th>
             <td>
-                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Redigera</a> |
+                <a asp-action="Delete" asp-route-id="@Model.Id">Ta bort</a>
             </td>
         </tr>
     </tbody>
@@ -45,6 +47,6 @@
 <form asp-action="TogglePublish" asp-controller="Portfolios" method="post">
     <input type="hidden" name="id" value="@Model.Id" />
     <button type="submit">
-        @(Model.Published ? "Unpublish" : "Publish")
+        @(Model.Published ? "Sluta publicera" : "Publicera")
     </button>
 </form>

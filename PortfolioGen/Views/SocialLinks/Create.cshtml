@@ -14,7 +14,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Platform" class="control-label"></label>
-                <input asp-for="Platform" class="form-control" />
+                <select asp-for="Platform" class="form-control">
+                    <option value=""> Välj plattform </option>
+                    <option value="Gmail">Gmail</option>
+                    <option value="Outlook">Outlook</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Github">Github</option>
+                    <option value="x.com">x.com</option>
+                </select>
                 <span asp-validation-for="Platform" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -22,10 +29,6 @@
                 <input asp-for="Url" class="form-control" />
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="PortfolioId" class="control-label"></label>
-                <select asp-for="PortfolioId" class ="form-control" asp-items="ViewBag.PortfolioId"></select>
-            </div> *@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
