@@ -1,7 +1,8 @@
 [build]
-builder = "Dockerfile"
+builder = "dockerfile"
+dockerfilePath = "./PortfolioGen/Dockerfile"
 
 [deploy]
-healthcheckPath = "/"
-healthcheckTimeout = 100
-restartPolicyType = "on_failure"
+startCommand = "./PortfolioGen"
+restartPolicyType = "always"
+healthcheckPath = "/health"
