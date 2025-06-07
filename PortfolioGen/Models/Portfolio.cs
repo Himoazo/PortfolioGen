@@ -7,6 +7,8 @@ namespace PortfolioGen.Models;
 public class Portfolio
 {
     public int Id { get; set; }
+
+    [Display(Name = "Portföljlänk")]
     public string PortfolioSlug { get; set; } 
 
     [Required(ErrorMessage = "Titel måste anges")]

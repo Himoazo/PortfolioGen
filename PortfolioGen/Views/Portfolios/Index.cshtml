@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    var request = Context.Request;
+    var baseUrl = $"{request.Scheme}://{request.Host}";
+    var fullUrl = $"{baseUrl}/{Model.PortfolioSlug}";
 }
 
 <div class="container mt-4">
@@ -48,7 +51,7 @@
                             <strong class="text-muted">@Html.DisplayNameFor(model => model.PortfolioSlug)</strong>
                         </div>
                         <div class="col-sm-8">
-                            <code class="bg-light px-2 py-1 rounded">@Html.DisplayFor(model => model.PortfolioSlug)</code>
+                            <a href="@fullUrl" target="_blank">@fullUrl</a>
                         </div>
                     </div>
 
