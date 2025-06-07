@@ -30,6 +30,5 @@ ENV ASPNETCORE_URLS=http://+:${PORT:-8080}
 # Set non-root user for security
 RUN adduser --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
-
 # Start the app
 ENTRYPOINT ["dotnet", "PortfolioGen.dll"]
