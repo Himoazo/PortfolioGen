@@ -1,54 +1,134 @@
 ﻿@model PortfolioGen.DTOs.PublicPortfolioDto
 
 @{
-    ViewData["Title"] = $"{Model.Name}'s porfolio";
+	ViewData["Title"] = $"{Model.Name}'s portfolio";
+	Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
+<div class="portfolio-container">
 
-<h1>@Model.Name</h1>
-<h2>@Model.Title</h2>
+	<div class="profile-header">
+		<h1 class="profile-name">@Model.Name</h1>
 
-<div>
-    <a href="/images/@Model.ProfileImage" target="_blank">
-        <img src="/images/@Model.ProfileImage" alt="Profile Image" />
-    </a>
+
+		<div class="profile-image-container">
+			<a href="/images/@Model.ProfileImage" target="_blank">
+				<img src="/images/@Model.ProfileImage" alt="@Model.Name's Profile" class="profile-image" />
+			</a>
+		</div>
+
+
+		@if (Model.SocialLinks != null)
+		{
+			<div class="social-links">
+				@foreach (var link in Model.SocialLinks)
+				{
+					@if (link.Platform == "Gmail" || link.Platform == "Outlook")
+					{
+						<a href="mailto: + @(link.Url)" target="_blank" class="social-link" title="@link.Url">
+							<img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
+						</a>
+					}
+					else
+					{
+						<a href="@link.Url" target="_blank" class="social-link" title="@link.Url">
+							<img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
+						</a>
+					}
+				}
+			</div>
+		}
+	</div>
+
+
+	@if (!string.IsNullOrEmpty(Model.Bio))
+	{
+		<div class="bio-section">
+			<h2 class="section-title">Om mig</h2>
+			<article class="bio-text">@Model.Bio</article>
+		</div>
+	}
+
+
+	@if ((Model.Projects != null) || (Model.GitHubRepos != null))
+	{
+		<div class="projects-section">
+			<h2 class="section-title">Mina projekt</h2>
+
+			<div class="projects-grid">
+
+				@if (Model.Projects != null)
+				{
+					@foreach (var project in Model.Projects)
+					{
+						<div class="project-card">
+							<h3 class="project-title">@project.Title</h3>
+
+							<div class="project-description">
+								@if (!string.IsNullOrEmpty(project.Description))
+								{
+									<p class="project-description">@project.Description</p>
+								}
+							</div>
+
+
+							<div class="project-links">
+								@if (!string.IsNullOrEmpty(project.ProjectUrl))
+								{
+									<a href="@project.ProjectUrl" target="_blank" class="project-link">
+										Webbplats
+									</a>
+								}
+								@if (!string.IsNullOrEmpty(project.GithubUrl))
+								{
+									<a href="@project.GithubUrl" target="_blank" class="project-link">
+										<img src="/images/Github.svg" alt="Github icon" class="git-icon" /> GitHub
+									</a>
+								}
+							</div>
+						</div>
+					}
+				}
+
+
+				@if (Model.GitHubRepos != null)
+				{
+					@foreach (var repo in Model.GitHubRepos)
+					{
+						<div class="project-card">
+							<h3 class="project-title">
+								@repo.Name
+								<span class="github-indicator">GitHub</span>
+							</h3>
+
+							<div class="project-description">
+								@if (!string.IsNullOrEmpty(repo.Description))
+								{
+									<p class="project-description">@repo.Description</p>
+								}
+							</div>
+
+							<div class="project-links">
+								<a href="@repo.Html_Url" target="_blank" class="project-link">
+									<img src="/images/Github.svg" alt="Github icon" class="git-icon" /> Repository
+								</a>
+								@if (!string.IsNullOrEmpty(repo.Homepage))
+								{
+									<a href="@repo.Homepage" target="_blank" class="project-link">
+										Webbplats
+									</a>
+								}
+								@if (repo.Stargazers_Count > 0)
+								{
+									<span class="repo-badge">
+										⭐ @repo.Stargazers_Count
+									</span>
+								}
+							</div>
+						</div>
+					}
+				}
+			</div>
+		</div>
+	}
 </div>
-
-<article>@Model.Bio</article>
-
-<div>
-    @if (Model.SocialLinks != null)
-    {
-        @foreach (var link in Model.SocialLinks)
-        {
-            @link.Platform
-            @link.Url
-        }
-    }
-</div>
-
-<div>
-    @if (Model.Projects != null)
-    {
-        @foreach (var project in Model.Projects)
-        {
-            @project.Title
-            @project.Description
-            @project.ProjectUrl
-            @project.GithubUrl
-        }
-    }
-</div>
-
-<ul>
-    @if (Model.GitHubRepos != null)
-    {
-        @foreach (var repo in Model.GitHubRepos)
-        {
-            <li>
-                <a href="@repo.Html_Url" target="_blank">@repo.Name</a> - @repo.Description -@repo.Homepage - @repo.Stargazers_Count
-            </li>
-        }
-    }
-
-</ul>

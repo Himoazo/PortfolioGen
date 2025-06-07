@@ -6,27 +6,13 @@
 
 
 
-<h3>Är du säker att du vill ta bort?</h3>
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Platform)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Platform)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-    </dl>
+<h3 class="row justify-content-center">Är du säker att du vill ta bort: @Html.DisplayFor(model => model.Platform)?</h3>
+<div class="justify-content-center">
     
-    <form asp-action="Delete">
+    
+    <form asp-action="Delete" class="text-center">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Ta bort" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-secondary">Tillbaka</a>
     </form>
 </div>
