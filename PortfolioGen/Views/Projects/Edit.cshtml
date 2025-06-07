@@ -4,46 +4,72 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-dark text-center py-4">
+                    <h1 class="card-title mb-0 h2">
+                         Redigera projekt
+                    </h1>
+                </div>
 
-<h4>Project</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold">
+                                 @Html.DisplayNameFor(model => model.Title)
+                            </label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="Ange projektets titel..." />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">
+                                @Html.DisplayNameFor(model => model.Description)
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Beskriv ditt projekt..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ProjectUrl" class="form-label fw-bold">
+                               @Html.DisplayNameFor(model => model.ProjectUrl)
+                            </label>
+                            <input asp-for="ProjectUrl" class="form-control" type="url" placeholder="https://exempel.se/" />
+                            <div class="form-text">Länk till ditt live-projekt (valfritt)</div>
+                            <span asp-validation-for="ProjectUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="GithubUrl" class="form-label fw-bold">
+                                @Html.DisplayNameFor(model => model.GithubUrl)
+                            </label>
+                            <input asp-for="GithubUrl" class="form-control" type="url" placeholder="https://github.com/användarnamn/projekt" />
+                            <div class="form-text">Länk till GitHub-repository (valfritt)</div>
+                            <span asp-validation-for="GithubUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-info btn-lg text-dark fw-bold me-md-2">
+                                Spara ändringar
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                Tillbaka
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectUrl" class="control-label"></label>
-                <input asp-for="ProjectUrl" class="form-control" />
-                <span asp-validation-for="ProjectUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GithubUrl" class="control-label"></label>
-                <input asp-for="GithubUrl" class="form-control" />
-                <span asp-validation-for="GithubUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

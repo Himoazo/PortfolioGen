@@ -4,49 +4,88 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Profil</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h1 class="card-title mb-0">Profil</h1>
+                </div>
 
-<table class="table">
-    <tbody>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.ProfileImage)</th>
-            <td>
-                <a href="/images/@Model.ProfileImage" target="_blank">
-                    <img src="/images/@Model.ProfileImage" alt="Profile Image" />
-                </a>
-            </td>
-        </tr>
+                <div class="card-body p-4">
+                    <!-- Profile Image -->
+                    <div class="text-center mb-4">
+                        <a href="/images/@Model.ProfileImage" target="_blank">
+                            <img src="/images/@Model.ProfileImage" alt="Profile Image"
+                                 class="rounded-circle border border-primary border-3"
+                                 style="width: 120px; height: 120px; object-fit: cover;" />
+                        </a>
+                    </div>
 
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Title)</th>
-            <td>@Html.DisplayFor(model => model.Title)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Bio)</th>
-            <td>@Html.DisplayFor(model => model.Bio)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.PortfolioSlug)</th>
-            <td>@Html.DisplayFor(model => model.PortfolioSlug)</td>
-        </tr>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.Published)</th>
-            <td>@(Model.Published ? "ja" : "nej")</td>
-        </tr>
-        <tr>
-            <th>Åtgärder</th>
-            <td>
-                <a asp-action="Edit" asp-route-id="@Model.Id">Redigera</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Id">Ta bort</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    <!-- Profile Information -->
+                    <div class="row mb-3 pb-3 border-bottom">
+                        <div class="col-sm-4">
+                            <strong class="text-muted">@Html.DisplayNameFor(model => model.Title)</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DisplayFor(model => model.Title)
+                        </div>
+                    </div>
 
+                    <div class="row mb-3 pb-3 border-bottom">
+                        <div class="col-sm-4">
+                            <strong class="text-muted">@Html.DisplayNameFor(model => model.Bio)</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            @Html.DisplayFor(model => model.Bio)
+                        </div>
+                    </div>
 
-<form asp-action="TogglePublish" asp-controller="Portfolios" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit">
-        @(Model.Published ? "Sluta publicera" : "Publicera")
-    </button>
-</form>
+                    <div class="row mb-3 pb-3 border-bottom">
+                        <div class="col-sm-4">
+                            <strong class="text-muted">@Html.DisplayNameFor(model => model.PortfolioSlug)</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            <code class="bg-light px-2 py-1 rounded">@Html.DisplayFor(model => model.PortfolioSlug)</code>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 pb-3">
+                        <div class="col-sm-4">
+                            <strong class="text-muted">@Html.DisplayNameFor(model => model.Published)</strong>
+                        </div>
+                        <div class="col-sm-8">
+                            @if (Model.Published)
+                            {
+                                <span class="badge bg-success fs-6">Publicerad</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary fs-6">Ej publicerad</span>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Redigera
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                            Ta bort
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light text-center">
+                    <form asp-action="TogglePublish" asp-controller="Portfolios" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn @(Model.Published ? "btn-warning" : "btn-success")">
+                            @(Model.Published ? "Sluta publicera" : "Publicera")
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

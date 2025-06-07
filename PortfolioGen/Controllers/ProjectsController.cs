@@ -62,25 +62,6 @@ public class ProjectsController : Controller
         return View(projectDtos);
     }
 
-    // GET: Projects/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var project = await _context.Projects
-            .Include(p => p.Portfolio)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (project == null)
-        {
-            return NotFound();
-        }
-
-        return View(project);
-    }
-
     // GET: Projects/Create
     public IActionResult Create()
     {

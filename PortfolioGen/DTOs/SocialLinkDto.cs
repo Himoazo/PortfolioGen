@@ -30,7 +30,7 @@ public class CreateSocialLinkDto
     [Required(ErrorMessage = "URL måste anges")]
     [Url(ErrorMessage = "Ogiltig URL")]
     [StringLength(255, ErrorMessage = "Max 255 tecken")]
-    [Display(Name = "URL")]
+    [Display(Name = "Länk")]
     public string Url { get; set; } = string.Empty;
 
     public int PortfolioId { get; set; }

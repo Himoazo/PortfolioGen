@@ -50,24 +50,7 @@ public class PortfoliosController : Controller
 
         return View(portfolio);
     }
-
-    // GET: Portfolios/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var portfolioDto = await _context.Portfolios
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (portfolioDto == null)
-        {
-            return NotFound();
-        }
-
-        return View(portfolioDto);
-    }
+   
 
     // GET: Portfolios/Create
     public IActionResult Create()

@@ -21,7 +21,7 @@ public class Portfolio
     [Display(Name = "Profil Bild")]
     public string? ProfileImage { get; set; }
     [NotMapped]
-    [Display(Name = "Profil Bild")]
+    [Display(Name = "Profilbild")]
     public IFormFile? ProfileImg { get; set; }
 
     [Display(Name = "Publicerat")]
