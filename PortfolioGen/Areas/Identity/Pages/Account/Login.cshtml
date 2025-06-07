@@ -5,76 +5,198 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-lg-7 d-none d-lg-flex align-items-center justify-content-center bg-primary text-white">
+            <div class="text-center px-4">
+                <div class="mb-4">
+                    <h1 class="display-4 fw-bold mb-4">PortfolioGen</h1>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+
+                <div class="mb-5">
+                    <h2 class="h4 mb-3">Skapa din professionella portfölj på några minuter – enkelt, snyggt och automatiserat.</h2>
+                    <p class="lead mb-4">
+                        Med PortfolioGen får du ett kraftfullt men användarvänligt verktyg för att bygga upp din digitala närvaro.
+                        Logga in med GitHub, så hämtar vi automatiskt dina publika repositories och presenterar dem snyggt i din portfölj.
+                        Se bara till att ge dina projekt tydliga namn och beskrivningar – så gör vi resten.
                     </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                    <p class="mb-4">
+                        Vill du hellre lägga till projekt manuellt? Inga problem.
+                        Du kan också registrera dig och logga in med e-post och lösenord, helt utan GitHub.
                     </p>
                 </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+
+                <div class="row text-center">
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="p-3 border border-white">
+                            <p class="small mb-0">Ladda upp din profilbild</p>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="p-3 border border-white">
+                            <p class="small mb-0">Skriv din personliga biografi</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="p-3 border border-white">
+                            <p class="small mb-0">Lägg till kontaktuppgifter</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <div class="p-3 border border-white">
+                            <p class="small mb-0">Visa upp dina projekt med stil</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <p class="h5 fw-light">PortfolioGen – för dig som vill visa upp vad du kan, utan krångel.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login form -->
+        <div class="col-lg-5 d-flex align-items-center justify-content-center">
+            <div class="w-100" style="max-width: 400px;">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h1 class="h3 mb-3 fw-normal">Välkommen tillbaka</h1>
+                            <p class="text-muted">Logga in på ditt PortfolioGen-konto</p>
+                        </div>
+
+                        
+                        <section class="mb-4">
+                            @{
+                                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                                {
+                                    <div class="alert alert-info">
+                                        <span class="me-2">ℹ️</span>
+                                        <small>
+                                            Externa inloggningstjänster är inte konfigurerade.
+                                            <a href="https://go.microsoft.com/fwlink/?LinkID=532715" class="alert-link">
+                                                Läs mer här
+                                            </a>.
+                                        </small>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                        <div class="d-grid gap-2">
+                                            @foreach (var provider in Model.ExternalLogins!)
+                                            {
+                                                <button type="submit" class="btn btn-dark btn-lg" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                                    @if (provider.Name.ToLower() == "github")
+                                                    {
+                                                        <span class="me-2"><img src="/images/Github.svg" alt="Github icon" class="git-icon" /></span>
+                                                    }
+                                                    Fortsätt med @provider.DisplayName
+                                                </button>
+                                            }
+                                        </div>
+                                    </form>
+                                }
+                            }
+                        </section>
+
+ 
+                        <div class="position-relative my-4">
+                            <hr class="my-4">
+                            <div class="position-absolute top-50 start-50 translate-middle bg-white px-3">
+                                <span class="text-muted small">ELLER LOGGA IN MED E-POST</span>
+                            </div>
+                        </div>
+
+                        <!-- Email/Password Login -->
+                        <section class="mb-4">
+                            <form id="account" method="post">
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                                    <label asp-for="Input.Email" class="form-label">Email</label>
+                                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
+                                    <label asp-for="Input.Password" class="form-label">Lösenord</label>
+                                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                                    <label class="form-check-label" asp-for="Input.RememberMe">
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+
+                                <button id="login-submit" type="submit" class="btn btn-outline-primary btn-lg w-100 mb-3">
+                                    Logga in
+                                </button>
+
+                                <div class="text-center">
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none">
+                                        Har du inget konto? <strong>Skapa konto här</strong>
+                                    </a>
+                                </div>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Mobile  -->
+                <div class="d-lg-none mt-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <h4 class="card-title">📁 PortfolioGen</h4>
+                                <p class="card-text">
+                                    Skapa din professionella portfölj på några minuter – enkelt, snyggt och automatiserat.
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <p class="small">
+                                    Med PortfolioGen får du ett kraftfullt men användarvänligt verktyg för att bygga upp din digitala närvaro.
+                                    Logga in med GitHub, så hämtar vi automatiskt dina publika repositories och presenterar dem snyggt i din portfölj.
+                                </p>
+                            </div>
+
+                            <div class="row text-center">
+                                <div class="col-3">
+                                    <div class="p-2 border border-white">
+                                        <p class="small mb-0">Profilbild</p>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 border border-white">
+                                        <p class="small mb-0">Biografi</p>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 border border-white">
+                                        <p class="small mb-0">Länkar</p>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="p-2 border border-white">
+                                        <p class="small mb-0">Projekt</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <p class="small mb-0 fw-light">
+                                    <strong>PortfolioGen</strong> – för dig som vill visa upp vad du kan, utan krångel.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

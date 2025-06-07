@@ -13,16 +13,18 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <!-- Profile Image -->
-                    <div class="text-center mb-4">
-                        <a href="/images/@Model.ProfileImage" target="_blank">
-                            <img src="/images/@Model.ProfileImage" alt="Profile Image"
-                                 class="rounded-circle border border-primary border-3"
-                                 style="width: 120px; height: 120px; object-fit: cover;" />
-                        </a>
-                    </div>
+                    @if (Model.ProfileImage != null)
+                    {
+                        <div class="text-center mb-4">
+                            <a href="/images/@Model.ProfileImage" target="_blank">
+                                <img src="/images/@Model.ProfileImage" alt="Profile Image"
+                                     class="rounded-circle border border-primary border-3"
+                                     style="width: 120px; height: 120px; object-fit: cover;" />
+                            </a>
+                        </div>
+                    }
 
-                    <!-- Profile Information -->
+
                     <div class="row mb-3 pb-3 border-bottom">
                         <div class="col-sm-4">
                             <strong class="text-muted">@Html.DisplayNameFor(model => model.Title)</strong>
@@ -66,7 +68,7 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
+
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
                             Redigera

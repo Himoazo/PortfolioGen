@@ -18,7 +18,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Title" class="form-label fw-bold">
-                                <i class="bi bi-person-badge"></i> @Html.DisplayNameFor(model => model.Title)
+                                 @Html.DisplayNameFor(model => model.Title)
                             </label>
                             <input asp-for="Title" class="form-control form-control-lg" placeholder="Ange din titel..." />
                             <span asp-validation-for="Title" class="text-danger small"></span>
@@ -26,7 +26,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Bio" class="form-label fw-bold">
-                                <i class="bi bi-chat-text"></i> @Html.DisplayNameFor(model => model.Bio)
+                                 @Html.DisplayNameFor(model => model.Bio)
                             </label>
                             <textarea asp-for="Bio" class="form-control" rows="4" placeholder="Berätta om dig själv..."></textarea>
                             <span asp-validation-for="Bio" class="text-danger small"></span>
@@ -34,7 +34,7 @@
 
                         <div class="mb-4">
                             <label asp-for="ProfileImg" class="form-label fw-bold">
-                                <i class="bi bi-image"></i> @Html.DisplayNameFor(model => model.ProfileImg)
+                                 @Html.DisplayNameFor(model => model.ProfileImg)
                             </label>
                             <input asp-for="ProfileImg" class="form-control" type="file" accept="image/*" />
                             <div class="form-text">Välj en profilbild (JPG, PNG eller GIF)</div>
@@ -43,17 +43,13 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-plus-circle"></i> Skapa portfölj
+                                Skapa portfölj
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <div class="card-footer bg-light text-center">
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left"></i> Tillbaka
-                    </a>
-                </div>
+                
             </div>
         </div>
     </div>

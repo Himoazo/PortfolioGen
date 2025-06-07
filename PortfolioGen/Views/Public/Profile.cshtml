@@ -10,12 +10,15 @@
 	<div class="profile-header">
 		<h1 class="profile-name">@Model.Name</h1>
 
-
+		@if(Model.ProfileImage != null)
+		{
 		<div class="profile-image-container">
 			<a href="/images/@Model.ProfileImage" target="_blank">
 				<img src="/images/@Model.ProfileImage" alt="@Model.Name's Profile" class="profile-image" />
 			</a>
 		</div>
+		}
+		
 
 
 		@if (Model.SocialLinks != null)
