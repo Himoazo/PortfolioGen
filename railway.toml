@@ -3,6 +3,4 @@ builder = "dockerfile"
 dockerfilePath = "./PortfolioGen/Dockerfile"
 
 [deploy]
-startCommand = "./PortfolioGen"
 restartPolicyType = "always"
-healthcheckPath = "/health"
