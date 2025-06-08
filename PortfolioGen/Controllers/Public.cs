@@ -46,7 +46,7 @@ public class PublicController : Controller
 
             if (portfolio is null)
             {
-                return NotFound("Potfolio was not found");
+                return NotFound();
             }
 
             if (portfolio.Published == false)
