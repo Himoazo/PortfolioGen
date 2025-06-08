@@ -1,30 +1,37 @@
 ﻿@page
 @model ExternalLoginModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registrera konto";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Please enter your email."/>
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <h1 class="mb-3">@ViewData["Title"]</h1>
+            <h5 id="external-login-title" class="text-secondary mb-4">
+                Koppla ditt konto från <strong>@Model.ProviderDisplayName</strong>
+            </h5>
+            <div class="alert alert-info" id="external-login-description">
+                Du har loggat in med <strong>@Model.ProviderDisplayName</strong>.
+                Vänligen ange en e-postadress nedan för att slutföra registreringen.
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+
+            <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Skriv in din e-postadress" />
+                    <label asp-for="Input.Email" class="form-label">E-postadress</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="w-100 btn btn-lg btn-success">
+                    Registrera konto
+                </button>
+            </form>
+
+        </div>
     </div>
 </div>
 
