@@ -46,6 +46,7 @@ public class PublicController : Controller
             if (portfolio.Published == false)
             { 
                 PublicPortfolioDto UnPublishedPortfolio = new();
+                
                 ViewBag.Unpublished = true;
                 return View(UnPublishedPortfolio);
 
