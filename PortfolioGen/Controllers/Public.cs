@@ -45,7 +45,9 @@ public class PublicController : Controller
 
             if (portfolio.Published == false)
             { 
-                return ViewBag.Unpublished = true;
+                ViewBag.Unpublished = true;
+                return View();
+
             }
 
             var githubUsername = portfolio.AppUser.UserName;
