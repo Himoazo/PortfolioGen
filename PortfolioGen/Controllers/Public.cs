@@ -21,12 +21,6 @@ public class PublicController : Controller
         _httpClientFactory = httpClientFactory;
     }
 
-    public IActionResult Index()
-    {
-            return View();
-    }
-
-
     public async Task<IActionResult> Profile(string? id)
     {
         
@@ -46,12 +40,12 @@ public class PublicController : Controller
 
             if (portfolio is null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Home");
             }
 
             if (portfolio.Published == false)
             { 
-                return NotFound("Portfolio is not yet published"); 
+                return ViewBag.Unpublished = true;
             }
 
             var githubUsername = portfolio.AppUser.UserName;

@@ -5,6 +5,15 @@
 	Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
+
+@if(ViewBag.Unpublished == true)
+{
+	<div class="alert alert-warning" role="alert">
+		<h4 class="alert-heading">Portfolio inte publicerad</h4>
+		<p>Denna portfölj är inte publicerad än och är endast synlig för ägaren.</p>
+	</div>
+}
+
 <div class="portfolio-container">
 
 	<div class="profile-header">
