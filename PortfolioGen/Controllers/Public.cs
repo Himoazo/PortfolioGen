@@ -45,8 +45,9 @@ public class PublicController : Controller
 
             if (portfolio.Published == false)
             { 
+                PublicPortfolioDto UnPublishedPortfolio = new();
                 ViewBag.Unpublished = true;
-                return View(portfolio);
+                return View(UnPublishedPortfolio);
 
             }
 
@@ -111,7 +112,7 @@ public class PublicController : Controller
 
             return View(publicPortfolio);
         }
-        Console.WriteLine($"Nothing Works"); 
-        return View("Index");
+
+        return View();
     }
 }
