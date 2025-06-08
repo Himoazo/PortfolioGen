@@ -11,8 +11,8 @@ using PortfolioGen.Data;
 namespace PortfolioGen.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250527203417_ExternalReg")]
-    partial class ExternalReg
+    [Migration("20250608143128_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,10 +273,10 @@ namespace PortfolioGen.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("GithubUrl")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PortfolioId")
