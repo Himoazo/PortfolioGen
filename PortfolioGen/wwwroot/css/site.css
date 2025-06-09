@@ -43,7 +43,6 @@ body {
 
 /*Portfolio*/
 
-
 .portfolio-container {
     background-color: #191f22;
     width: 100%;
@@ -79,10 +78,10 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-    .profile-image:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 48px rgba(0,0,0,0.4);
-    }
+.profile-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+}
 
 .social-links {
     display: flex;
@@ -107,16 +106,16 @@ body {
     border: 2px solid #333;
 }
 
-    .social-link img{
-        max-width: 64px;
-    }
+.social-link img {
+    max-width: 64px;
+}
 
-    .social-link:hover {
-        background-color: #3a3a3a;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        color: #ffffff;
-    }
+.social-link:hover {
+    background-color: #3a3a3a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    color: #ffffff;
+}
 
 .bio-section {
     max-width: 800px;
@@ -128,10 +127,10 @@ body {
     font-size: 1.1rem;
     color: #c0c0c0;
     line-height: 1.8;
-    background-color: #242424;
+    background-color: #2a3236;
     padding: 2rem;
     border-radius: 12px;
-    border-left: 4px solid #4a90e2;
+    border-left: 4px solid #64ffda;
 }
 
 .projects-section {
@@ -147,17 +146,17 @@ body {
     position: relative;
 }
 
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -0.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 3px;
-        background: linear-gradient(90deg, #4a90e2, #357abd);
-        border-radius: 2px;
-    }
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #64ffda, #26a69a);
+    border-radius: 2px;
+}
 
 .projects-grid {
     display: grid;
@@ -167,7 +166,7 @@ body {
 }
 
 .project-card {
-    background-color: #242424;
+    background-color: #2a3236;
     border-radius: 12px;
     padding: 2rem;
     border: 1px solid #333;
@@ -176,21 +175,21 @@ body {
     overflow: hidden;
 }
 
-    .project-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #4a90e2, #357abd);
-    }
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #64ffda, #26a69a);
+}
 
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-        border-color: #4a90e2;
-    }
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    border-color: #64ffda;
+}
 
 .project-title {
     font-size: 1.5rem;
@@ -231,8 +230,8 @@ body {
 }
 
     .project-link:hover {
-        background-color: #4a90e2;
-        color: #ffffff;
+        background-color: #64ffda;
+        color: #191f22;
         transform: translateY(-1px);
     }
 
@@ -249,13 +248,62 @@ body {
 }
 
 .github-indicator {
-    color: #4a90e2;
+    color: #64ffda;
     font-size: 0.9rem;
     font-weight: 500;
 }
 
-.git-icon{
+.git-icon {
     max-width: 20%;
+}
+
+/*QR*/
+.qr-code-container {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background-color: #2a3236;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.qr-code-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    border-color: #64ffda;
+}
+
+.qr-code-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #64ffda, #26a69a);
+    border-radius: 12px 12px 0 0;
+}
+
+.qr-code-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.qr-code-label {
+    color: #c0c0c0;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
@@ -284,6 +332,21 @@ body {
     .social-link {
         width: 45px;
         height: 45px;
+    }
+
+    .qr-code-container {
+        top: 1rem;
+        right: 1rem;
+        padding: 1rem;
+    }
+
+    .qr-code-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .qr-code-label {
+        font-size: 0.8rem;
     }
 }
 

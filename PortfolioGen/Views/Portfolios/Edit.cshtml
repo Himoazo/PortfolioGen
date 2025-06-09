@@ -13,9 +13,20 @@
                 </div>
 
                 <div class="card-body p-4">
+                    @if (Model.ProfileImage != null)
+                    {
+                        <div class="text-center mb-4">
+                            <a href="/images/@Model.ProfileImage" target="_blank">
+                                <img src="/images/@Model.ProfileImage" alt="Profile Image"
+                                     class="rounded-circle border border-primary border-3"
+                                     style="width: 120px; height: 120px; object-fit: cover;" />
+                            </a>
+                        </div>
+                    }
                     <form asp-action="Edit" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="ProfileImage" />
 
                         <div class="mb-3">
                             <label asp-for="Title" class="form-label fw-bold">
@@ -27,7 +38,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Bio" class="form-label fw-bold">
-                                 @Html.DisplayNameFor(model => model.Bio)
+                                @Html.DisplayNameFor(model => model.Bio)
                             </label>
                             <textarea asp-for="Bio" class="form-control" rows="4" placeholder="Berätta om dig själv..."></textarea>
                             <span asp-validation-for="Bio" class="text-danger small"></span>
@@ -35,16 +46,29 @@
 
                         <div class="mb-4">
                             <label asp-for="ProfileImg" class="form-label fw-bold">
-                                 @Html.DisplayNameFor(model => model.ProfileImg)
+                                @Html.DisplayNameFor(model => model.ProfileImg)
                             </label>
                             <input asp-for="ProfileImg" class="form-control" type="file" accept="image/*" />
-                            <div class="form-text">Välj en ny profilbild (lämna tom för att behålla nuvarande)</div>
+
+                            @if (Model.ProfileImage != null)
+                            {
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="removeImage" name="removeImage" value="true">
+                                    <label class="form-check-label text-danger" for="removeImage">
+                                        Ta bort nuvarande profilbild
+                                    </label>
+                                </div>
+                            }
+
+                            <div class="form-text">
+                                Välj en ny profilbild, markera rutan för att ta bort nuvarande, eller lämna båda tomma för att behålla nuvarande
+                            </div>
                             <span asp-validation-for="ProfileImg" class="text-danger small"></span>
                         </div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-info btn-lg text-dark fw-bold">
-                                 Spara ändringar
+                                Spara ändringar
                             </button>
                         </div>
                     </form>

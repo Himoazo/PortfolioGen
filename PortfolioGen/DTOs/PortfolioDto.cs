@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Humanizer.Localisation;
+using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioGen.DTOs;
 
@@ -15,6 +16,7 @@ public class PortfolioDto
     public string Bio { get; set; } = string.Empty;
 
     [Display(Name = "Profil Bild")]
+    [FileTypeValidator(".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff")]
     public IFormFile? ProfileImg { get; set; }
     public bool Published { get; set; }
 }
@@ -33,6 +35,10 @@ public class EditPortfolioDto
     public string Bio { get; set; } = string.Empty;
 
     [Display(Name = "Profil Bild")]
+    public string? ProfileImage { get; set; }
+
+    [Display(Name = "Profil Bild")]
+    [FileTypeValidator(".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff")]
     public IFormFile? ProfileImg { get; set; }
 
 }
@@ -48,4 +54,31 @@ public class PublicPortfolioDto
     public List<ProjectDto> Projects { get; set; } = [];
     public List<SocialLinkDto> SocialLinks { get; set; } = [];
     public List<GitHubRepoDto> GitHubRepos { get; set; } = [];
+}
+
+
+public class FileTypeValidator : ValidationAttribute
+{
+    private readonly string[] Extensions;
+    public FileTypeValidator(params string[] extensions)
+        => Extensions = extensions;
+
+    public string GetErrorMessage() =>
+        $"Felaktig filtyp.";
+
+    protected override ValidationResult? IsValid(
+        object? value, ValidationContext validationContext)
+    {
+        if (value is IFormFile file)
+        {
+            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (!Extensions.Contains(ext))
+            {
+                return new ValidationResult(GetErrorMessage());
+            }
+        }
+
+                return ValidationResult.Success;
+    }
 }

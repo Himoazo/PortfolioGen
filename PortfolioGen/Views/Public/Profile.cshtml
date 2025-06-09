@@ -9,8 +9,8 @@
 @if(ViewBag.Unpublished == true)
 {
 	<div class="alert alert-warning" role="alert">
-		<h4 class="alert-heading">Portfolio inte publicerad</h4>
-		<p>Denna portfölj är inte publicerad än och är endast synlig för ägaren.</p>
+		<h4 class="alert-heading">Kommer snart...</h4>
+		<p>Denna portfölj är inte publicerad än och är endast synlig för sin ägare.</p>
 	</div>
 }
 
@@ -52,6 +52,15 @@
 		}
 	</div>
 
+	@if (ViewBag.QRCodeImage != null)
+	{
+		<div class="qr-code-container">
+			<img src="data:image/png;base64,@ViewBag.QRCodeImage"
+				 alt="QR Code"
+				 class="qr-code-image" />
+			<p class="qr-code-label">Dela portfölj</p>
+		</div>
+	}
 
 	@if (!string.IsNullOrEmpty(Model.Bio))
 	{

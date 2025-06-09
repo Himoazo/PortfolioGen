@@ -111,7 +111,8 @@ public class PortfoliosController : Controller
             Id = portfolio.Id,
             Title = portfolio.Title,
             Bio = portfolio.Bio,
-            ProfileImg = portfolio.ProfileImg
+            ProfileImg = portfolio.ProfileImg,
+            ProfileImage = portfolio.ProfileImage
         };
 
         return View(editPortfolioDto);
@@ -124,7 +125,7 @@ public class PortfoliosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, EditPortfolioDto EditportfolioDto)
+    public async Task<IActionResult> Edit(int id, EditPortfolioDto EditportfolioDto, bool removeImage = false)
     {
         var userId = _userManager.GetUserId(User);
         if (userId is null) return Unauthorized();
@@ -140,9 +141,20 @@ public class PortfoliosController : Controller
             portfolio.Title = EditportfolioDto.Title;
             portfolio.Bio = EditportfolioDto.Bio;
 
-            if (EditportfolioDto.ProfileImg is not null)
+            if (removeImage)
             {
-                Console.WriteLine("EditportfolioDto.ProfileImg is not null"); // this's not getting logged which means the statemnt is never true
+                if (portfolio.ProfileImage is not null)
+                {
+                    System.IO.File.Delete(Path.Combine(wwwRootPath, "images", portfolio.ProfileImage));
+                    portfolio.ProfileImage = null; 
+                }
+            }
+            else if (EditportfolioDto.ProfileImg is not null)
+            {
+                if (portfolio.ProfileImage is not null)
+                {
+                    System.IO.File.Delete(Path.Combine(wwwRootPath, "images", portfolio.ProfileImage));
+                }
                 portfolio.ProfileImage = await UploadImg(EditportfolioDto.ProfileImg);
             }
 
@@ -164,7 +176,7 @@ public class PortfoliosController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        /*ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id", EditportfolioDto.AppUserId);*/
+
         return View(EditportfolioDto);
     }
 
@@ -224,26 +236,38 @@ public class PortfoliosController : Controller
     //Upload images
     private async Task<string> UploadImg(IFormFile imageFile)
     {
-        string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
-        fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
-       
-        string finalFileName = fileName + ".jpg";
-
-        string path = Path.Combine(wwwRootPath, "images", finalFileName);
-
-        
-        using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
+        try
         {
-            image.Mutate(x => x
-                .Resize(new ResizeOptions
-                {
-                    Size = new Size(300, 300),
-                    Mode = ResizeMode.Crop 
-                }));
+            // Ensure the directory exists
+            string imagesPath = Path.Combine(wwwRootPath, "images");
+            Directory.CreateDirectory(imagesPath);
 
-            await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
+            // Your existing code...
+            string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+            fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
+
+            string finalFileName = fileName + ".jpg";
+            string path = Path.Combine(imagesPath, finalFileName);
+
+            using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
+            {
+                image.Mutate(x => x
+                    .Resize(new ResizeOptions
+                    {
+                        Size = new Size(300, 300),
+                        Mode = ResizeMode.Crop
+                    }));
+
+                await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
+            }
+
+            return finalFileName;
         }
-
-        return finalFileName;
+        catch (Exception ex)
+        {
+            // Log the actual error
+            Console.WriteLine($"Upload error: {ex.Message}");
+            throw new InvalidOperationException($"Failed to upload image: {ex.Message}");
+        }
     }
 }

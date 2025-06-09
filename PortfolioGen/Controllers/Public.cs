@@ -7,6 +7,8 @@ using PortfolioGen.DTOs;
 using PortfolioGen.Models;
 using System.Net.Http;
 using System.Text.Json;
+using QRCoder;
+
 
 namespace PortfolioGen.Controllers;
 
@@ -88,7 +90,7 @@ public class PublicController : Controller
                 Title = portfolio.Title,
                 Bio = portfolio.Bio,
                 ProfileImage = portfolio.ProfileImage,
-                    Projects = portfolio.Projects
+                Projects = portfolio.Projects
             ?.Select(p => new ProjectDto
             {
                 Id = p.Id,
@@ -111,6 +113,13 @@ public class PublicController : Controller
                     GitHubRepos = repos?.ToList() ?? []
                 };
 
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            var url = $"{Request.Scheme}://{Request.Host}{Request.PathBase}{Request.Path}{Request.QueryString}";
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
+            Base64QRCode qrCode = new Base64QRCode(qrCodeData);
+            string qrCodeImageAsBase64 = qrCode.GetGraphic(20);
+
+            ViewBag.QRCodeImage = qrCodeImageAsBase64;
             return View(publicPortfolio);
         }
 
