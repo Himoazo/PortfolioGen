@@ -236,38 +236,30 @@ public class PortfoliosController : Controller
     //Upload images
     private async Task<string> UploadImg(IFormFile imageFile)
     {
-        try
+        string[] AllowedExt = [".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff"];
+
+        var ext = Path.GetExtension(imageFile.FileName);
+
+        string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+        fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
+       
+        string finalFileName = fileName + ".jpg";
+
+        string path = Path.Combine(wwwRootPath, "images", finalFileName);
+
+        
+        using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
         {
-            // Ensure the directory exists
-            string imagesPath = Path.Combine(wwwRootPath, "images");
-            Directory.CreateDirectory(imagesPath);
+            image.Mutate(x => x
+                .Resize(new ResizeOptions
+                {
+                    Size = new Size(300, 300),
+                    Mode = ResizeMode.Crop 
+                }));
 
-            // Your existing code...
-            string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
-            fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
-
-            string finalFileName = fileName + ".jpg";
-            string path = Path.Combine(imagesPath, finalFileName);
-
-            using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
-            {
-                image.Mutate(x => x
-                    .Resize(new ResizeOptions
-                    {
-                        Size = new Size(300, 300),
-                        Mode = ResizeMode.Crop
-                    }));
-
-                await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
-            }
-
-            return finalFileName;
+            await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
         }
-        catch (Exception ex)
-        {
-            // Log the actual error
-            Console.WriteLine($"Upload error: {ex.Message}");
-            throw new InvalidOperationException($"Failed to upload image: {ex.Message}");
-        }
+
+        return finalFileName;
     }
 }
