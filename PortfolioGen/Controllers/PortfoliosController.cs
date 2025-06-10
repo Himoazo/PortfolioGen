@@ -236,9 +236,7 @@ public class PortfoliosController : Controller
     //Upload images
     private async Task<string> UploadImg(IFormFile imageFile)
     {
-        string[] AllowedExt = [".jpg", ".jpeg", ".png", ".bmp", ".gif", ".tiff"];
-
-        var ext = Path.GetExtension(imageFile.FileName);
+         var ext = Path.GetExtension(imageFile.FileName);
 
         string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
         fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");

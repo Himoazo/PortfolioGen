@@ -23,7 +23,14 @@
                             <label asp-for="Platform" class="form-label fw-bold">
                                 @Html.DisplayNameFor(model => model.Platform)
                             </label>
-                            <input asp-for="Platform" class="form-control form-control-lg" placeholder="Ange plattform..." />
+                            <select asp-for="Platform" class="form-control form-control-lg">
+                                <option value="">Välj plattform</option>
+                                <option value="Gmail">Gmail</option>
+                                <option value="Outlook">Outlook</option>
+                                <option value="LinkedIn">LinkedIn</option>
+                                <option value="Github">Github</option>
+                                <option value="x.com">x.com</option>
+                            </select>
                             <span asp-validation-for="Platform" class="text-danger small"></span>
                         </div>
 
