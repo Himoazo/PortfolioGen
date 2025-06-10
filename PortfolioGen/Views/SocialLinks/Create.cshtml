@@ -1,4 +1,4 @@
-﻿@model PortfolioGen.Models.SocialLink
+﻿@model PortfolioGen.DTOs.CreateSocialLinkDto
 
 @{
     ViewData["Title"] = "Create";
@@ -37,8 +37,8 @@
                             <label asp-for="Url" class="form-label fw-bold">
                                 @Html.DisplayNameFor(model => model.Url)
                             </label>
-                            <input asp-for="Url" class="form-control form-control-lg" type="url" placeholder="https://exempel.se/din-profil" />
-                            <div class="form-text">Ange URL till din profil eller sida</div>
+                            <input asp-for="Url" class="form-control form-control-lg" />
+                            <div class="form-text">Ange Epost eller URL till din profil eller sida</div>
                             <span asp-validation-for="Url" class="text-danger small"></span>
                         </div>
 
@@ -62,3 +62,22 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    document.getElementById("Platform").addEventListener("change", function() {
+        const platform = this.value;
+        const urlInput = document.getElementById("Url");
+        const emailPlatforms = ["Gmail", "Outlook"];
+
+        if (emailPlatforms.includes(platform)) {
+            urlInput.type = "email";
+            urlInput.placeholder = "mejl@exempel.com";
+        } else if (platform !== "") {
+            urlInput.type = "url";
+            urlInput.placeholder = "https://exempel.se/profil";
+        } else {
+            urlInput.type = "text";
+            urlInput.placeholder = "Välj plattform";
+        }
+    });
+</script>

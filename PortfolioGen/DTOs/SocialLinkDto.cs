@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PortfolioGen.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioGen.DTOs;
 
@@ -12,7 +13,7 @@ public class SocialLinkDto
     public string Platform { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "URL måste anges")]
-    [Url(ErrorMessage = "Ogiltig URL")]
+    [EmailAndUrl(ErrorMessage = "Ogiltig URL")]
     [StringLength(255, ErrorMessage = "Max 255 tecken")]
     [Display(Name = "URL")]
     public string Url { get; set; } = string.Empty;
@@ -28,7 +29,7 @@ public class CreateSocialLinkDto
     public string Platform { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "URL måste anges")]
-    [Url(ErrorMessage = "Ogiltig URL")]
+    [EmailAndUrl(ErrorMessage = "Ogiltig URL")]
     [StringLength(255, ErrorMessage = "Max 255 tecken")]
     [Display(Name = "Länk")]
     public string Url { get; set; } = string.Empty;
@@ -46,7 +47,7 @@ public class UpdateSocialLinkDto
     public string Platform { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "URL måste anges")]
-    [Url(ErrorMessage = "Ogiltig URL")]
+    [EmailAndUrl(ErrorMessage = "Ogiltig URL")]
     [StringLength(255, ErrorMessage = "Max 255 tecken")]
     [Display(Name = "URL")]
     public string Url { get; set; } = string.Empty;

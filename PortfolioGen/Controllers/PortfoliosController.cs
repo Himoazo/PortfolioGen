@@ -236,7 +236,9 @@ public class PortfoliosController : Controller
     //Upload images
     private async Task<string> UploadImg(IFormFile imageFile)
     {
-         var ext = Path.GetExtension(imageFile.FileName);
+        Console.WriteLine($"wwwRootPath: {wwwRootPath}");
+
+        var ext = Path.GetExtension(imageFile.FileName);
 
         string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
         fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
@@ -244,8 +246,14 @@ public class PortfoliosController : Controller
         string finalFileName = fileName + ".jpg";
 
         string path = Path.Combine(wwwRootPath, "images", finalFileName);
+        Console.WriteLine($"Full path: {path}");
 
-        
+        var directory = Path.GetDirectoryName(path);
+        if (!Directory.Exists(directory))
+        {
+            Directory.CreateDirectory(directory!);
+        }
+
         using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
         {
             image.Mutate(x => x
