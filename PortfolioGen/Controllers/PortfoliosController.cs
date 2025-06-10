@@ -234,7 +234,7 @@ public class PortfoliosController : Controller
     }
 
     //Upload images
-    private async Task<string> UploadImg(IFormFile imageFile)
+    /*private async Task<string> UploadImg(IFormFile imageFile)
     {
         Console.WriteLine($"wwwRootPath: {wwwRootPath}");
 
@@ -267,5 +267,44 @@ public class PortfoliosController : Controller
         }
 
         return finalFileName;
+    }*/
+
+
+    private async Task<string> UploadImg(IFormFile imageFile)
+    {
+        try
+        {
+            var ext = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
+            string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+            fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
+            string finalFileName = fileName + ".jpg";
+            string path = Path.Combine(wwwRootPath, "images", finalFileName);
+
+            var directory = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory!);
+            }
+
+            using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
+            {
+                image.Mutate(x => x.Resize(new ResizeOptions
+                {
+                    Size = new Size(300, 300),
+                    Mode = ResizeMode.Crop
+                }));
+
+                await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
+            }
+
+            return finalFileName;
+        }
+        catch (Exception ex)
+        {
+            // Log the actual error
+            Console.WriteLine($"Upload failed: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            throw; // Re-throw so you see it in the app
+        }
     }
 }
