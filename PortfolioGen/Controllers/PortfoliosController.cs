@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.Hosting;
 using PortfolioGen.Data;
 using PortfolioGen.DTOs;
 using PortfolioGen.Models;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PortfolioGen.Controllers;
 
@@ -234,18 +235,17 @@ public class PortfoliosController : Controller
     }
 
     //Upload images
-    /*private async Task<string> UploadImg(IFormFile imageFile)
+    private async Task<string> UploadImg(IFormFile imageFile)
     {
-        Console.WriteLine($"wwwRootPath: {wwwRootPath}");
-
         var ext = Path.GetExtension(imageFile.FileName);
 
         string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
         fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
-       
+
         string finalFileName = fileName + ".jpg";
 
-        string path = Path.Combine(wwwRootPath, "images", finalFileName);
+        string path = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", finalFileName);
+
         Console.WriteLine($"Full path: {path}");
 
         var directory = Path.GetDirectoryName(path);
@@ -260,51 +260,30 @@ public class PortfoliosController : Controller
                 .Resize(new ResizeOptions
                 {
                     Size = new Size(300, 300),
-                    Mode = ResizeMode.Crop 
+                    Mode = ResizeMode.Crop
                 }));
 
             await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
         }
 
         return finalFileName;
-    }*/
-
-
-    private async Task<string> UploadImg(IFormFile imageFile)
-    {
-        try
-        {
-            var ext = Path.GetExtension(imageFile.FileName).ToLowerInvariant();
-            string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
-            fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
-            string finalFileName = fileName + ".jpg";
-            string path = Path.Combine(wwwRootPath, "images", finalFileName);
-
-            var directory = Path.GetDirectoryName(path);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory!);
-            }
-
-            using (var image = await Image.LoadAsync(imageFile.OpenReadStream()))
-            {
-                image.Mutate(x => x.Resize(new ResizeOptions
-                {
-                    Size = new Size(300, 300),
-                    Mode = ResizeMode.Crop
-                }));
-
-                await image.SaveAsync(path, new JpegEncoder { Quality = 80 });
-            }
-
-            return finalFileName;
-        }
-        catch (Exception ex)
-        {
-            // Log the actual error
-            Console.WriteLine($"Upload failed: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
-            throw; // Re-throw so you see it in the app
-        }
     }
+
+    [Route("images/{filename}")]
+    public async Task<IActionResult> GetUserImage(string filename)
+    {
+        Console.WriteLine($"{filename} is being called");
+        if(string.IsNullOrEmpty(filename)) { return NoContent(); }
+
+        var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", filename);
+
+        if (!System.IO.File.Exists(filePath))
+        {
+            return NoContent();
+        }
+
+        var imageBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        return File(imageBytes, "image/jpeg");
+    }
+
 }

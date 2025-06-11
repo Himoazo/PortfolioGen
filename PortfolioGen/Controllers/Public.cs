@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using PortfolioGen.Data;
 using PortfolioGen.DTOs;
 using PortfolioGen.Models;
+using QRCoder;
 using System.Net.Http;
 using System.Text.Json;
-using QRCoder;
 
 
 namespace PortfolioGen.Controllers;
@@ -16,11 +17,13 @@ public class PublicController : Controller
 {
     private readonly ApplicationDbContext _context;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public PublicController(ApplicationDbContext context, IHttpClientFactory httpClientFactory)
+    public PublicController(ApplicationDbContext context, IHttpClientFactory httpClientFactory, IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
         _httpClientFactory = httpClientFactory;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<IActionResult> Profile(string? id)
@@ -124,5 +127,21 @@ public class PublicController : Controller
         }
 
         return View();
+    }
+
+    [Route("profileimg/{filename}")]
+    public async Task<IActionResult> GetUserImage(string filename)
+    {
+        if (string.IsNullOrEmpty(filename)) { return NoContent(); }
+
+        var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", filename);
+
+        if (!System.IO.File.Exists(filePath))
+        {
+            return NoContent();
+        }
+
+        var imageBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+        return File(imageBytes, "image/jpeg");
     }
 }
