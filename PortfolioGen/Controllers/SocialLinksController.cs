@@ -82,40 +82,7 @@ public class SocialLinksController : Controller
         return View(socialLinkDto);
     }
 
-    // GET: SocialLinks/Edit/5
-    /*public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
 
-        var userId = _userManager.GetUserId(User);
-        var portfolio = await _context.Portfolios
-            .FirstOrDefaultAsync(p => p.AppUserId == userId);
-
-        if (portfolio == null)
-        {
-            return RedirectToAction("Create", "Portfolios");
-        }
-
-        var socialLink = await _context.SocialLinks
-            .FirstOrDefaultAsync(s => s.Id == id && s.PortfolioId == portfolio.Id);
-
-        if (socialLink == null)
-        {
-            return NotFound();
-        }
-
-        var updateDto = new UpdateSocialLinkDto
-        {
-            Id = socialLink.Id,
-            Platform = socialLink.Platform,
-            Url = socialLink.Url
-        };
-
-        return View(updateDto);
-    }*/
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)

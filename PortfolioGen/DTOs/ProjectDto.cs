@@ -47,8 +47,6 @@ public class CreateProjectDto
     [Url(ErrorMessage = "Ogiltig URL")]
     [Display(Name = "Github-repo URL")]
     public string? GithubUrl { get; set; }
-
-    /*public int PortfolioId { get; set; }*/
 }
 
 

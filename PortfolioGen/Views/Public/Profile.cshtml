@@ -1,7 +1,7 @@
 ﻿@model PortfolioGen.DTOs.PublicPortfolioDto
 
 @{
-	ViewData["Title"] = $"{Model.Name}'s portfolio";
+	ViewData["Title"] = "Min portfölj";
 	Layout = "~/Views/Shared/_PublicLayout.cshtml";
 }
 
@@ -37,7 +37,7 @@
 				{
 					@if (link.Platform == "Gmail" || link.Platform == "Outlook")
 					{
-						<a href="mailto: + @(link.Url)" target="_blank" class="social-link" title="@link.Url">
+						<a href="mailto:+@(link.Url)" target="_blank" class="social-link" title="@link.Url">
 							<img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
 						</a>
 					}

@@ -25,14 +25,12 @@ public class PortfoliosController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IWebHostEnvironment _webHostEnvironment;
-    private readonly string wwwRootPath;
     public PortfoliosController(ApplicationDbContext context, UserManager<AppUser> UserManager, 
         IWebHostEnvironment webHostEnvironment)
     {
         _context = context;
         _userManager = UserManager;
         _webHostEnvironment = webHostEnvironment;
-        wwwRootPath = _webHostEnvironment.WebRootPath;
     }
 
     // GET: Portfolios
@@ -56,13 +54,10 @@ public class PortfoliosController : Controller
     // GET: Portfolios/Create
     public IActionResult Create()
     {
-        ViewData["AppUserId"] = new SelectList(_context.Set<AppUser>(), "Id", "Id");
         return View();
     }
 
     // POST: Portfolios/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PortfolioDto portfolioDto)
@@ -122,8 +117,6 @@ public class PortfoliosController : Controller
 
 
     // POST: Portfolios/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, EditPortfolioDto EditportfolioDto, bool removeImage = false)
@@ -146,7 +139,7 @@ public class PortfoliosController : Controller
             {
                 if (portfolio.ProfileImage is not null)
                 {
-                    System.IO.File.Delete(Path.Combine(wwwRootPath, "images", portfolio.ProfileImage));
+                    System.IO.File.Delete(Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", portfolio.ProfileImage));
                     portfolio.ProfileImage = null; 
                 }
             }
@@ -154,7 +147,7 @@ public class PortfoliosController : Controller
             {
                 if (portfolio.ProfileImage is not null)
                 {
-                    System.IO.File.Delete(Path.Combine(wwwRootPath, "images", portfolio.ProfileImage));
+                    System.IO.File.Delete(Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", portfolio.ProfileImage));
                 }
                 portfolio.ProfileImage = await UploadImg(EditportfolioDto.ProfileImg);
             }
@@ -237,16 +230,12 @@ public class PortfoliosController : Controller
     //Upload images
     private async Task<string> UploadImg(IFormFile imageFile)
     {
-        var ext = Path.GetExtension(imageFile.FileName);
-
         string fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
         fileName = fileName.Replace(" ", string.Empty) + DateTime.Now.ToString("yymmssfff");
 
         string finalFileName = fileName + ".jpg";
 
         string path = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", finalFileName);
-
-        Console.WriteLine($"Full path: {path}");
 
         var directory = Path.GetDirectoryName(path);
         if (!Directory.Exists(directory))
@@ -272,7 +261,7 @@ public class PortfoliosController : Controller
     [Route("images/{filename}")]
     public async Task<IActionResult> GetUserImage(string filename)
     {
-        Console.WriteLine($"{filename} is being called");
+
         if(string.IsNullOrEmpty(filename)) { return NoContent(); }
 
         var filePath = Path.Combine(_webHostEnvironment.ContentRootPath, "..", "data", "images", filename);

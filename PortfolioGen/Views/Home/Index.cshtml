@@ -1,7 +1,7 @@
 ﻿@model PortfolioGen.DTOs.PublicPortfolioDto
 
 @{
-	ViewData["Title"] = $"{Model.Name}'s portfolio";
+	ViewData["Title"] = "Portfölj";
 }
 
 <h1 class="text-center">Portfölj förhandsgränskning</h1>
@@ -29,7 +29,7 @@
 				{
 					@if(link.Platform == "Gmail" || link.Platform == "Outlook")
 					{
-						<a href="mailto: + @(link.Url)" target="_blank" class="social-link" title="@link.Url">
+						<a href="mailto:+@(link.Url)" target="_blank" class="social-link" title="@link.Url">
 							<img src="/images/@(link.Platform + ".svg")" alt="@link.Platform icon" />
 						</a>
 					} else

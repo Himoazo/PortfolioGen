@@ -9,7 +9,7 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-lg">
                 <div class="card-header bg-info text-white text-center py-4">
-                    <h1 class="card-title mb-0 h2">
+                    <h1 class="card-title mb-0 h2 text-dark">
                         Lägg till projekt
                     </h1>
                 </div>
@@ -20,7 +20,7 @@
 
                         <div class="mb-3">
                             <label asp-for="Title" class="form-label fw-bold">
-                                <@Html.DisplayNameFor(model => model.Title)
+                                @Html.DisplayNameFor(model => model.Title)
                             </label>
                             <input asp-for="Title" class="form-control form-control-lg" placeholder="Ange projektets titel..." />
                             <span asp-validation-for="Title" class="text-danger small"></span>
@@ -31,7 +31,7 @@
                                 @Html.DisplayNameFor(model => model.Description)
                             </label>
                             <textarea asp-for="Description" class="form-control" rows="4" placeholder="Beskriv ditt projekt..."></textarea>
-                            <span asp-validation-for="Description" class="text-danger small"></span>
+                            <span asp-validation-for="Description" class="text-danger small" id="Description-error"></span>
                         </div>
 
                         <div class="mb-3">
@@ -40,7 +40,7 @@
                             </label>
                             <input asp-for="ProjectUrl" class="form-control" type="url" placeholder="https://exempel.se/mitt-projekt" />
                             <div class="form-text">Länk till ditt live-projekt (valfritt)</div>
-                            <span asp-validation-for="ProjectUrl" class="text-danger small"></span>
+                            <span asp-validation-for="ProjectUrl" class="text-danger small" id="ProjectUrl-error"></span>
                         </div>
 
                         <div class="mb-4">

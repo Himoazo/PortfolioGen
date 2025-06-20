@@ -21,7 +21,7 @@ public class ProjectsController : Controller
     private readonly ApplicationDbContext _context;
     private readonly UserManager<AppUser> _userManager;
     private readonly IWebHostEnvironment _webHostEnvironment;
-    private readonly string wwwRootPath;
+
 
     public ProjectsController(ApplicationDbContext context, UserManager<AppUser> UserManager,
         IWebHostEnvironment webHostEnvironment)
@@ -29,7 +29,6 @@ public class ProjectsController : Controller
         _context = context;
         _userManager = UserManager;
         _webHostEnvironment = webHostEnvironment;
-        wwwRootPath = _webHostEnvironment.WebRootPath;
     }
 
     // GET: Projects
@@ -65,13 +64,10 @@ public class ProjectsController : Controller
     // GET: Projects/Create
     public IActionResult Create()
     {
-        ViewData["PortfolioId"] = new SelectList(_context.Portfolios, "Id", "Bio");
         return View();
     }
 
     // POST: Projects/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(CreateProjectDto projectDto)
@@ -103,7 +99,6 @@ public class ProjectsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        /*ViewData["PortfolioId"] = new SelectList(_context.Portfolios, "Id", "Bio", projectDto.PortfolioId);*/
         return View(projectDto);
     }
 
@@ -120,7 +115,7 @@ public class ProjectsController : Controller
         {
             return NotFound();
         }
-        ViewData["PortfolioId"] = new SelectList(_context.Portfolios, "Id", "Bio", project.PortfolioId);
+
         return View(project);
     }
 
@@ -178,7 +173,7 @@ public class ProjectsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["PortfolioId"] = new SelectList(_context.Portfolios, "Id", "Bio", project.PortfolioId);
+
         return View(project);
     }
 

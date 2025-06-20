@@ -57,6 +57,7 @@ public class PublicController : Controller
 
             }
 
+            // Github repos
             var githubUsername = portfolio.AppUser.UserName;
 
             IEnumerable<GitHubRepoDto> repos = [];
@@ -116,6 +117,7 @@ public class PublicController : Controller
                     GitHubRepos = repos?.ToList() ?? []
                 };
 
+            // QR Code
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             var url = $"{Request.Scheme}://{Request.Host}{Request.PathBase}{Request.Path}{Request.QueryString}";
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
